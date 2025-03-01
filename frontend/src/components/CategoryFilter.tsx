@@ -1,4 +1,4 @@
-// CategoryFilter.tsx
+// src/components/CategoryFilter.tsx
 import type React from 'react'
 import { useStore } from '@nanostores/react'
 import { Button } from './ui/button'
@@ -18,9 +18,19 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   const selectedCategory = useStore(selectedCategoryStore)
 
   const handleCategorySelect = (categoryId: number | null) => {
-    selectedCategoryStore.set(categoryId)
+    selectedCategoryStore.set(categoryId);
+
+    // URLを更新して実際にナビゲーションする
+    if (typeof window !== 'undefined') {
+      const path = categoryId === null ? '/category/all' : `/category/${categoryId}`;
+      // 現在と同じカテゴリの場合はナビゲーションしない
+      if (window.location.pathname !== path) {
+        window.location.href = path; // 実際のナビゲーション
+      }
+    }
+
     // モバイルメニューを閉じる
-    mobileMenuStore.set(false)
+    mobileMenuStore.set(false);
   }
 
   return (

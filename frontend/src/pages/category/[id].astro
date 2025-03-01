@@ -1,0 +1,36 @@
+---
+// src/pages/category/[id].astro
+import Layout from '@/layouts/Layout.astro'
+import MainContent from '@/components/MainContent'
+import { getCategoryById, getPageTitle, getPageDescription } from '@/lib/data-utils'
+import { categories } from '@/data/category'
+
+// 静的に生成するパスを定義
+export function getStaticPaths() {
+  // 'all'（すべてのカテゴリ）のパスを含める
+  const paths = [{ params: { id: 'all' } }];
+
+  // 各カテゴリのパスを追加
+  categories.forEach(category => {
+    paths.push({ params: { id: category.id.toString() } });
+  });
+
+  return paths;
+}
+
+// URLからカテゴリIDを取得
+const { id } = Astro.params;
+const categoryId = id === 'all' ? null : Number(id);
+const pageTitle = getPageTitle(categoryId);
+const pageDescription = getPageDescription(categoryId);
+
+// 無効なIDの場合はリダイレクト
+const validId = id === 'all' || (categoryId && getCategoryById(categoryId));
+if (!validId) {
+  return Astro.redirect('/category/all');
+  }
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <MainContent client:load initialCategoryId={categoryId} />
+</Layout>

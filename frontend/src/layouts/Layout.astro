@@ -4,6 +4,20 @@ import CategoryFilter from '@/components/CategoryFilter';
 import MobileMenu from '@/components/MobileMenu';
 import { categories } from '@/data/category';
 import "../styles/global.css";
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "QuickToolify - 便利なツールコレクション",
+    description = "QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。"
+} = Astro.props;
+
+// 現在のURL情報の安全な取得
+const pathname = Astro.url.pathname;
+const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com';
 ---
 
 <!doctype html>
@@ -12,14 +26,14 @@ import "../styles/global.css";
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <title>QuickToolify - 便利なツールコレクション</title>
-    <meta name="description" content="QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。">
+    <title>{title}</title>
+    <meta name="description" content={description}>
     <meta name="keywords" content="ツール, オンラインツール, QuickToolify, ユーティリティ">
-    <meta property="og:title" content="QuickToolify - 便利なツールコレクション">
-    <meta property="og:description" content="QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://quicktoolify.example.com/">
-    <link rel="canonical" href="https://quicktoolify.example.com/">
+    <meta property="og:url" content={`${siteUrl}${pathname}`}>
+    <link rel="canonical" href={`${siteUrl}${pathname}`}>
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
 <Header client:load title="ツール一覧" />
