@@ -12,7 +12,7 @@ const toolInfo = {
 
 <Layout title={toolInfo.title} description={toolInfo.description} keywords={toolInfo.keywords}>
   <!-- サーバーサイドレンダリングされた説明部分 -->
-  <div class="max-w-3xl mx-auto mb-8">
+  <div  class="max-w-3xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
     <h1 class="text-3xl font-bold mb-4">画像フォーマット変換ツール</h1>
     <p class="text-lg mb-4">
       さまざまな画像フォーマット間で簡単に変換できるオンラインツールです。
@@ -28,14 +28,12 @@ const toolInfo = {
         <li>完全無料で制限なし</li>
       </ul>
     </div>
-  </div>
+
 
   <!-- クライアントサイドのインタラクティブ部分 -->
   <ImageConverter client:only />
 
-  <!-- 追加のSEO向けコンテンツ -->
-  <div class="max-w-3xl mx-auto mt-12 prose">
-    <h2>画像フォーマットについて</h2>
+    <h2 class="mt-5">画像フォーマットについて</h2>
     <p>
       画像フォーマットの選択は、ウェブサイトのパフォーマンスや画質に大きく影響します。
       最近のフォーマットであるWebPやAVIFは、従来のJPGやPNGよりも優れた圧縮率を提供します。
