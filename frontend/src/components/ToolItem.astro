@@ -1,5 +1,7 @@
 ---
 // src/components/ToolList.astro
+import { Image, FileArchive, RefreshCw } from 'lucide-react';
+
 export interface Props {
   tools: Array<{
     id: number;
@@ -10,11 +12,26 @@ export interface Props {
     bg: string;
     text: string;
     slug: string;
+    iconName?: string; // アイコン名
   }>;
   categoryName: string;
 }
 
 const { tools, categoryName } = Astro.props
+
+// アイコンのマッピング関数
+function getIconComponent(iconName: string) {
+  switch (iconName) {
+    case 'Image':
+      return Image;
+    case 'FileArchive':
+      return FileArchive;
+    case 'RefreshCw':
+      return RefreshCw;
+    default:
+      return null;
+  }
+}
 ---
 
 <h1 id="category-title" class="text-xl font-semibold mb-4">
@@ -46,7 +63,10 @@ const { tools, categoryName } = Astro.props
             style={`background-color: ${tool.bg}; color: ${tool.text};`}
             aria-hidden="true"
           >
-            <span>{tool.name.charAt(0)}</span>
+            {tool.iconName === 'Image' && <Image size={24} client:load />}
+            {tool.iconName === 'FileArchive' && <FileArchive size={24} client:load />}
+            {tool.iconName === 'RefreshCw' && <RefreshCw size={24} client:load />}
+            {!tool.iconName && <span>{tool.name.charAt(0)}</span>}
           </div>
           <h3 class="text-lg font-semibold mb-1 text-center">
             {tool.name}
