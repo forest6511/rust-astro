@@ -1,66 +1,90 @@
 ---
-import Header from '@/components/Header';
-import CategoryFilter from '@/components/CategoryFilter';
-import MobileMenu from '@/components/MobileMenu';
-import { categories } from '@/data/category';
-import "../styles/global.css";
+import Header from '@/components/Header'
+import CategoryFilter from '@/components/CategoryFilter'
+import MobileMenu from '@/components/MobileMenu'
+import { categories } from '@/data/category'
+import '../styles/global.css'
 
 interface Props {
-    title?: string;
-    description?: string;
+  title?: string;
+  description?: string;
 }
 
 const {
-    title = "QuickToolify - 便利なツールコレクション",
-    description = "QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。"
-} = Astro.props;
+  title = 'QuickToolify - 便利なツールコレクション',
+  description = 'QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。',
+} = Astro.props
 
 // 現在のURL情報の安全な取得
-const pathname = Astro.url.pathname;
-const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com';
+const pathname = Astro.url.pathname
+const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com'
 ---
 
 <!doctype html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <title>{title}</title>
-    <meta name="description" content={description}>
-    <meta name="keywords" content="ツール, オンラインツール, QuickToolify, ユーティリティ">
-    <meta property="og:title" content={title}>
-    <meta property="og:description" content={description}>
-    <meta property="og:type" content="website">
-    <meta property="og:url" content={`${siteUrl}${pathname}`}>
-    <link rel="canonical" href={`${siteUrl}${pathname}`}>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="keywords" content="ツール, オンラインツール, QuickToolify, ユーティリティ">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={`${siteUrl}${pathname}`}>
+  <link rel="canonical" href={`${siteUrl}${pathname}`}>
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
 <Header client:load title="ツール一覧" />
+
+<!-- モバイル表示時にもコンテンツエリアが適切に表示されるように -->
 <div class="flex flex-1 overflow-hidden">
-    <nav aria-label="カテゴリナビゲーション" class="hidden sm:block sm:w-56 h-full">
-        <CategoryFilter
-          client:load
-          categories={[{ id: 0, name: "すべて", bg: "#FFFFFF", text: "#000000" }, ...categories]}
-          className="w-full h-full bg-white shadow-md flex flex-col"
-        />
-    </nav>
-    <MobileMenu client:load>
-        <CategoryFilter
-          client:load
-          categories={[{ id: 0, name: "すべて", bg: "#FFFFFF", text: "#000000" }, ...categories]}
-        />
-    </MobileMenu>
-    <main class="flex-1 p-4 sm:p-6 overflow-auto" id="main-content">
-        <div class="max-w-7xl mx-auto">
-            <slot />
-        </div>
-    </main>
-</div>
-<footer class="bg-white py-4 border-t">
-    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
-        <p>&copy; 2025 QuickToolify - すべての便利なツールを一箇所に</p>
+  <!-- デスクトップ用サイドバー -->
+  <nav aria-label="カテゴリナビゲーション" class="hidden sm:block sm:w-56 h-full">
+    <CategoryFilter
+      client:load
+      categories={[{
+        id: 0,
+        name: 'すべて',
+        bg: '#FFFFFF',
+        text: '#000000',
+        slug: 'all',
+        description: 'すべてのツール',
+        keywords: [],
+      }, ...categories]}
+      className="w-full h-full bg-white shadow-md flex flex-col"
+    />
+  </nav>
+
+  <!-- モバイルメニュー -->
+  <MobileMenu client:load>
+    <CategoryFilter
+      client:load
+      categories={[{
+        id: 0,
+        name: 'すべて',
+        bg: '#FFFFFF',
+        text: '#000000',
+        slug: 'all',
+        description: 'すべてのツール',
+        keywords: [],
+      }, ...categories]}
+    />
+  </MobileMenu>
+
+  <!-- メインコンテンツエリア（モバイルでも表示されるように） -->
+  <main class="flex-1 p-4 sm:p-6 overflow-auto w-full" id="main-content">
+    <div class="max-w-7xl mx-auto">
+      <slot />
     </div>
+  </main>
+</div>
+
+<footer class="bg-white py-4 border-t">
+  <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+    <p>&copy; 2025 QuickToolify - すべての便利なツールを一箇所に</p>
+  </div>
 </footer>
 </body>
 </html>
