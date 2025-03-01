@@ -1,45 +1,62 @@
 ---
-// src/components/ToolItem.astro
-import { Image, FileArchive, RefreshCw } from 'lucide-react';
-
-interface Props {
-  tool: {
-  id: number;
-  name: string;
-  description: string;
-  categoryId: number;
-  url: string;
-  bg: string;
-  text: string;
-  icon: any;
-    iconName: string;
-  };
+// src/components/ToolList.astro
+export interface Props {
+  tools: Array<{
+    id: number;
+    name: string;
+    description: string;
+    categoryId: number;
+    url: string;
+    bg: string;
+    text: string;
+    slug: string;
+  }>;
+  categoryName: string;
 }
 
-const { tool } = Astro.props;
+const { tools, categoryName } = Astro.props
 ---
-<a
-href={tool.url}
-class="block tool-item"
-data-category-id={tool.categoryId}
-aria-label={`${tool.name}: ${tool.description}`}
-role="listitem"
+
+<h1 id="category-title" class="text-xl font-semibold mb-4">
+  {categoryName}
+</h1>
+
+{tools.length === 0 ? (
+<p class="text-center py-8 text-gray-500">
+  このカテゴリにはツールがありません。
+</p>
+  ) : (
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+  role="list"
+  aria-label={`${categoryName}カテゴリのツール`}
 >
-<div class="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 h-full">
-  <div class="flex flex-col items-center h-full">
-    <div class="w-12 h-12 flex items-center justify-center rounded-full mb-2"
-         style={`background-color: ${tool.bg}; color: ${tool.text};`}>
-      <!-- アイコン名に基づいて適切なアイコンをレンダリング -->
-      {tool.iconName === 'Image' && <Image size={24} client:load />}
-      {tool.iconName === 'FileArchive' && <FileArchive size={24} client:load />}
-      {tool.iconName === 'RefreshCw' && <RefreshCw size={24} client:load />}
-    </div>
-    <h3 class="text-lg font-semibold mb-1 text-center">
-      {tool.name}
-    </h3>
-    <p class="text-sm text-gray-600 text-center flex-grow">
-      {tool.description}
-    </p>
-  </div>
+  {tools.map(tool => (
+    <a
+      href={tool.url}
+      class="block tool-item"
+      data-category-id={tool.categoryId}
+      aria-label={`${tool.name}: ${tool.description}`}
+      role="listitem"
+    >
+      <div class="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 h-full">
+        <div class="flex flex-col items-center h-full">
+          <div
+            class="w-12 h-12 flex items-center justify-center rounded-full mb-2"
+            style={`background-color: ${tool.bg}; color: ${tool.text};`}
+            aria-hidden="true"
+          >
+            <span>{tool.name.charAt(0)}</span>
+          </div>
+          <h3 class="text-lg font-semibold mb-1 text-center">
+            {tool.name}
+          </h3>
+          <p class="text-sm text-gray-600 text-center flex-grow">
+            {tool.description}
+          </p>
+        </div>
+      </div>
+    </a>
+  ))}
 </div>
-</a>
+)}
