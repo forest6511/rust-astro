@@ -39,7 +39,7 @@ export const tools: Tool[] = [
     name: '画像フォーマット変換',
     description: 'JPEG, PNG, WebP 変換',
     icon: <RefreshCw size={24} />,
-    url: '/imgs/convert',
+    url: '/images/convert',
     bg: '#E8F5E9',
     text: '#2E7D32',
   },
