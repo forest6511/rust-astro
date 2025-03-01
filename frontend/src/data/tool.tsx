@@ -1,12 +1,11 @@
 import type React from 'react'
-import { Image, FileArchive, RefreshCw } from 'lucide-react'
 
 export interface Tool {
   id: number
   categoryId: number
   name: string
   description: string
-  icon: React.ReactNode
+  iconName: string
   slug: string
   url: string
   bg: string
@@ -19,7 +18,7 @@ export const tools: Tool[] = [
     categoryId: 1,
     name: '画像リサイズ',
     description: '画像のサイズを変更',
-    icon: <Image size={24} />,
+    iconName: 'Image',
     slug: 'image-resize',
     url: '/tool/image-resize',
     bg: '#FFF3F3',
@@ -30,7 +29,7 @@ export const tools: Tool[] = [
     categoryId: 1,
     name: '画像圧縮',
     description: '画像の容量を軽量化',
-    icon: <FileArchive size={24} />,
+    iconName: 'FileArchive',
     slug: 'image-compress',
     url: '/tool/image-compress',
     bg: '#F3E5F5',
@@ -41,7 +40,7 @@ export const tools: Tool[] = [
     categoryId: 1,
     name: '画像フォーマット変換',
     description: 'JPEG, PNG, WebP 変換',
-    icon: <RefreshCw size={24} />,
+    iconName: 'RefreshCw',
     slug: 'image-convert',
     url: '/tool/image-convert',
     bg: '#E8F5E9',
@@ -52,7 +51,7 @@ export const tools: Tool[] = [
     categoryId: 2,
     name: 'JSONフォーマット',
     description: 'JSONデータを整形',
-    icon: <FileArchive size={24} />,
+    iconName: 'FileArchive',
     slug: 'json-format',
     url: '/tool/json-format',
     bg: '#E8F4FD',
@@ -63,7 +62,7 @@ export const tools: Tool[] = [
     categoryId: 3,
     name: 'MP4変換',
     description: '動画をMP4形式に変換',
-    icon: <RefreshCw size={24} />,
+    iconName: 'RefreshCw',
     slug: 'mp4-convert',
     url: '/tool/mp4-convert',
     bg: '#FFFDE7',
@@ -74,7 +73,7 @@ export const tools: Tool[] = [
     categoryId: 4,
     name: 'ZIP圧縮',
     description: 'ファイルをZIPに圧縮',
-    icon: <FileArchive size={24} />,
+    iconName: 'FileArchive',
     slug: 'zip-compress',
     url: '/tool/zip-compress',
     bg: '#E8F5E9',
@@ -85,7 +84,7 @@ export const tools: Tool[] = [
     categoryId: 5,
     name: 'PDF変換',
     description: 'ドキュメントをPDFに変換',
-    icon: <RefreshCw size={24} />,
+    iconName: 'RefreshCw',
     slug: 'pdf-convert',
     url: '/tool/pdf-convert',
     bg: '#F3E5F5',

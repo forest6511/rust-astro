@@ -1,5 +1,6 @@
 ---
 // src/components/ToolItem.astro
+import { Image, FileArchive, RefreshCw } from 'lucide-react';
 
 interface Props {
   tool: {
@@ -11,8 +12,9 @@ interface Props {
   bg: string;
   text: string;
   icon: any;
+    iconName: string;
   };
-  }
+}
 
 const { tool } = Astro.props;
 ---
@@ -25,12 +27,12 @@ role="listitem"
 >
 <div class="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 h-full">
   <div class="flex flex-col items-center h-full">
-    <div
-      class="w-12 h-12 flex items-center justify-center rounded-full mb-2"
-      style={`background-color: ${tool.bg}; color: ${tool.text};`}
-      aria-hidden="true"
-    >
-      {tool.icon}
+    <div class="w-12 h-12 flex items-center justify-center rounded-full mb-2"
+         style={`background-color: ${tool.bg}; color: ${tool.text};`}>
+      <!-- アイコン名に基づいて適切なアイコンをレンダリング -->
+      {tool.iconName === 'Image' && <Image size={24} client:load />}
+      {tool.iconName === 'FileArchive' && <FileArchive size={24} client:load />}
+      {tool.iconName === 'RefreshCw' && <RefreshCw size={24} client:load />}
     </div>
     <h3 class="text-lg font-semibold mb-1 text-center">
       {tool.name}
