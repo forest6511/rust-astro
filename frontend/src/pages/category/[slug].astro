@@ -1,0 +1,68 @@
+---
+// src/pages/category/[slug].astro
+import Layout from '@/layouts/Layout.astro'
+import ToolItem from '@/components/ToolItem.astro'
+import MainContent from '@/components/MainContent'
+import {
+  getCategoryBySlug,
+  getToolsByCategory,
+  getPageTitle,
+  getPageDescription
+} from '@/lib/data-utils'
+import { categories } from '@/data/category'
+
+export function getStaticPaths() {
+  // 'all'（すべてのカテゴリ）のパスを含める
+  const paths = [{ params: { slug: 'all' } }];
+
+  // 各カテゴリのパスを追加（スラッグベース）
+  categories.forEach(category => {
+    paths.push({ params: { slug: category.slug } });
+  });
+
+  return paths;
+}
+
+const { slug } = Astro.params;
+const category = slug === 'all' ? null : getCategoryBySlug(slug);
+const categoryId = category?.id || null;
+const pageTitle = getPageTitle(categoryId);
+const pageDescription = getPageDescription(categoryId);
+
+// サーバーサイドでツールをフィルタリング
+const filteredTools = getToolsByCategory(categoryId);
+const currentCategory = category?.name || 'すべて';
+
+// 無効なスラッグの場合はリダイレクト
+if (slug !== 'all' && !category) {
+  return Astro.redirect('/category/all');
+}
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- サーバーサイドでレンダリングされた静的コンテンツ -->
+  <h1 id="category-title" class="text-xl font-semibold mb-4">
+    {currentCategory}
+  </h1>
+
+  {filteredTools.length === 0 ? (
+    <p class="text-center py-8 text-gray-500">
+      このカテゴリにはツールがありません。
+    </p>
+  ) : (
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      role="list"
+      aria-label={`${currentCategory}カテゴリのツール`}
+    >
+      {filteredTools.map(tool => (
+        <ToolItem tool={tool} />
+      ))}
+    </div>
+  )}
+
+  <!-- 後続の操作のためのクライアントコンポーネント（非表示） -->
+  <div style="display: none;">
+    <MainContent client:idle initialCategoryId={categoryId} />
+  </div>
+</Layout>

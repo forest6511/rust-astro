@@ -7,6 +7,7 @@ export interface Tool {
   name: string
   description: string
   icon: React.ReactNode
+  slug: string
   url: string
   bg: string
   text: string
@@ -19,6 +20,7 @@ export const tools: Tool[] = [
     name: '画像リサイズ',
     description: '画像のサイズを変更',
     icon: <Image size={24} />,
+    slug: 'image-resize',
     url: '/tool/image-resize',
     bg: '#FFF3F3',
     text: '#C62828',
@@ -29,6 +31,7 @@ export const tools: Tool[] = [
     name: '画像圧縮',
     description: '画像の容量を軽量化',
     icon: <FileArchive size={24} />,
+    slug: 'image-compress',
     url: '/tool/image-compress',
     bg: '#F3E5F5',
     text: '#6A1B9A',
@@ -39,6 +42,7 @@ export const tools: Tool[] = [
     name: '画像フォーマット変換',
     description: 'JPEG, PNG, WebP 変換',
     icon: <RefreshCw size={24} />,
+    slug: 'image-convert',
     url: '/tool/image-convert',
     bg: '#E8F5E9',
     text: '#2E7D32',
@@ -49,6 +53,7 @@ export const tools: Tool[] = [
     name: 'JSONフォーマット',
     description: 'JSONデータを整形',
     icon: <FileArchive size={24} />,
+    slug: 'json-format',
     url: '/tool/json-format',
     bg: '#E8F4FD',
     text: '#1565C0',
@@ -59,6 +64,7 @@ export const tools: Tool[] = [
     name: 'MP4変換',
     description: '動画をMP4形式に変換',
     icon: <RefreshCw size={24} />,
+    slug: 'mp4-convert',
     url: '/tool/mp4-convert',
     bg: '#FFFDE7',
     text: '#F9A825',
@@ -69,6 +75,7 @@ export const tools: Tool[] = [
     name: 'ZIP圧縮',
     description: 'ファイルをZIPに圧縮',
     icon: <FileArchive size={24} />,
+    slug: 'zip-compress',
     url: '/tool/zip-compress',
     bg: '#E8F5E9',
     text: '#2E7D32',
@@ -79,6 +86,7 @@ export const tools: Tool[] = [
     name: 'PDF変換',
     description: 'ドキュメントをPDFに変換',
     icon: <RefreshCw size={24} />,
+    slug: 'pdf-convert',
     url: '/tool/pdf-convert',
     bg: '#F3E5F5',
     text: '#6A1B9A',

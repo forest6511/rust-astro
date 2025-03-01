@@ -1,36 +1,53 @@
 // src/components/CategoryFilter.tsx
-import type React from 'react'
+import { useEffect } from 'react'
 import { useStore } from '@nanostores/react'
 import { Button } from './ui/button'
 import type { Category } from '@/data/category'
 import { selectedCategoryStore } from '@/stores/categoryStore'
 import { mobileMenuStore } from '@/stores/mobileMenuStore'
+import { getCategoryPathById, getCategoryIdFromPath } from '@/lib/data-utils'
 
 export interface CategoryFilterProps {
   categories: Category[]
   className?: string
+  initialCategoryId?: number | null
 }
 
 const CategoryFilter: React.FC<CategoryFilterProps> = ({
   categories,
   className = '',
+  initialCategoryId = null,
 }) => {
   const selectedCategory = useStore(selectedCategoryStore)
 
-  const handleCategorySelect = (categoryId: number | null) => {
-    selectedCategoryStore.set(categoryId);
+  // 初期カテゴリをセットアップ
+  useEffect(() => {
+    if (initialCategoryId !== undefined) {
+      selectedCategoryStore.set(initialCategoryId)
+    } else if (typeof window !== 'undefined') {
+      // URLからカテゴリIDを取得して設定
+      const categoryId = getCategoryIdFromPath(window.location.pathname)
+      if (categoryId !== null) {
+        selectedCategoryStore.set(categoryId)
+      }
+    }
+  }, [initialCategoryId])
 
-    // URLを更新して実際にナビゲーションする
+  const handleCategorySelect = (categoryId: number | null) => {
+    selectedCategoryStore.set(categoryId)
+
+    // URLを更新（スラッグベース）
     if (typeof window !== 'undefined') {
-      const path = categoryId === null ? '/category/all' : `/category/${categoryId}`;
+      const path = getCategoryPathById(categoryId)
+
       // 現在と同じカテゴリの場合はナビゲーションしない
       if (window.location.pathname !== path) {
-        window.location.href = path; // 実際のナビゲーション
+        window.location.href = path // 実際のナビゲーション
       }
     }
 
     // モバイルメニューを閉じる
-    mobileMenuStore.set(false);
+    mobileMenuStore.set(false)
   }
 
   return (

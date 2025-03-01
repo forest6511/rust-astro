@@ -1,25 +1,23 @@
 // src/components/MainContent.tsx
 import { useEffect } from 'react'
-import { useStore } from '@nanostores/react'
 import { selectedCategoryStore } from '@/stores/categoryStore'
 
 interface MainContentProps {
-  initialCategoryId?: number | null;
+  initialCategoryId?: number | null
 }
 
-const MainContent: React.FC<MainContentProps> = ({ initialCategoryId = null }) => {
-  const selectedCategory = useStore(selectedCategoryStore)
-
-  // 初期値の設定
+// このコンポーネントはクライアントサイドの状態初期化のみを担当
+const MainContent: React.FC<MainContentProps> = ({
+  initialCategoryId = null,
+}) => {
   useEffect(() => {
-    if (initialCategoryId !== undefined && initialCategoryId !== selectedCategory) {
-      selectedCategoryStore.set(initialCategoryId);
+    if (initialCategoryId !== undefined) {
+      selectedCategoryStore.set(initialCategoryId)
     }
-  }, [initialCategoryId]);
+  }, [initialCategoryId])
 
-  // 実際のレンダリングコードは必要なくなるため、
-  // カテゴリが変更された時の処理だけを行う空のコンポーネントとして機能
-  return null;
+  // 実際の表示はサーバーサイドで行うため、何も表示しない
+  return null
 }
 
 export default MainContent
