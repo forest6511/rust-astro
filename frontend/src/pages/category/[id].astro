@@ -2,35 +2,81 @@
 // src/pages/category/[id].astro
 import Layout from '@/layouts/Layout.astro'
 import MainContent from '@/components/MainContent'
-import { getCategoryById, getPageTitle, getPageDescription } from '@/lib/data-utils'
+import { getCategoryById, getPageTitle, getPageDescription, getToolsByCategory } from '@/lib/data-utils'
 import { categories } from '@/data/category'
 
-// 静的に生成するパスを定義
 export function getStaticPaths() {
-  // 'all'（すべてのカテゴリ）のパスを含める
   const paths = [{ params: { id: 'all' } }];
-
-  // 各カテゴリのパスを追加
   categories.forEach(category => {
     paths.push({ params: { id: category.id.toString() } });
   });
-
   return paths;
 }
 
-// URLからカテゴリIDを取得
 const { id } = Astro.params;
 const categoryId = id === 'all' ? null : Number(id);
 const pageTitle = getPageTitle(categoryId);
 const pageDescription = getPageDescription(categoryId);
 
+// サーバーサイドでツールをフィルタリング
+const filteredTools = getToolsByCategory(categoryId);
+const currentCategory = getCategoryById(categoryId)?.name || 'すべて';
+
 // 無効なIDの場合はリダイレクト
 const validId = id === 'all' || (categoryId && getCategoryById(categoryId));
 if (!validId) {
   return Astro.redirect('/category/all');
-  }
+}
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <MainContent client:load initialCategoryId={categoryId} />
-</Layout>
+  <!-- サーバーサイドでレンダリングされた静的コンテンツ -->
+  <h2 id="category-title" class="text-xl font-semibold mb-4">
+    {currentCategory}
+  </h2>
+
+  {filteredTools.length === 0 ? (
+    <p class="text-center py-8 text-gray-500">
+      このカテゴリにはツールがありません。
+    </p>
+  ) : (
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      role="list"
+      aria-label={`${currentCategory}カテゴリのツール`}
+    >
+      {filteredTools.map(tool => (
+        <a
+        href={tool.url}
+        class="block tool-item"
+        data-category-id={tool.categoryId}
+        aria-label={`${tool.name}: ${tool.description}`}
+        role="listitem"
+          >
+          <div class="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 h-full">
+            <div class="flex flex-col items-center h-full">
+              <div
+                class="w-12 h-12 flex items-center justify-center rounded-full mb-2"
+                style={`background-color: ${tool.bg}; color: ${tool.text};`}
+                aria-hidden="true"
+              >
+                {tool.icon}
+              </div>
+              <h3 class="text-lg font-semibold mb-1 text-center">
+                {tool.name}
+              </h3>
+              <p class="text-sm text-gray-600 text-center flex-grow">
+                {tool.description}
+              </p>
+            </div>
+          </div>
+        </a>
+        ))}
+    </div>
+    )}
+
+    <!-- 後続の操作のためのクライアントコンポーネント（非表示） -->
+    <div style="display: none;">
+      <MainContent client:idle initialCategoryId={categoryId} />
+    </div>
+    </Layout>
