@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { convertImages } from '@/lib/api.ts'
 
 type ConvertedFile = {
   originalName: string
@@ -81,51 +82,18 @@ export default function ImageConverter() {
   }
 
   const handleConvert = async () => {
-    // if (files.length === 0) {
-    //   toast({
-    //     title: "エラー",
-    //     description: "変換するファイルを選択してください",
-    //     variant: "destructive",
-    //   });
-    //   return;
-    // }
+    if (files.length === 0) return
 
     setLoading(true)
     setProgress(0)
     setConvertedFiles([])
 
     try {
-      // ここで実際の変換処理を行います。
-      // この例では、変換処理をシミュレートするだけです。
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // 1秒待機
-
-        const newFileName = `${file.name.split('.')[0]}.${format}`
-        setConvertedFiles((prev) => [
-          ...prev,
-          {
-            originalName: file.name,
-            name: newFileName,
-            url: URL.createObjectURL(file), // 実際には変換されたファイルのURLを使用します
-            size: file.size,
-          },
-        ])
-
-        setProgress(Math.round(((i + 1) / files.length) * 100))
-      }
-
-      // toast({
-      //   title: "変換完了",
-      //   description: `${files.length}個のファイルを${format.toUpperCase()}形式に変換しました`,
-      // });
+      // バックエンドAPI呼び出し
+      const result = await convertImages(files, format)
+      setConvertedFiles(result.files)
     } catch (error) {
-      console.error('変換エラー', error)
-      // toast({
-      //   title: "変換エラー",
-      //   description: "ファイルの変換中にエラーが発生しました",
-      //   variant: "destructive",
-      // });
+      console.error('Conversion error:', error)
     } finally {
       setLoading(false)
     }

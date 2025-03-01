@@ -1,8 +1,59 @@
 ---
+// src/pages/tool/image-convert/index.astro
 import Layout from '@/layouts/Layout.astro'
 import ImageConverter from '@/components/images/ImageConvert'
+
+const toolInfo = {
+  title: "画像フォーマット変換 - QuickToolify",
+  description: "JPG、PNG、WebP、HEIC、AVIF、GIF形式の画像を別のフォーマットに簡単に変換できる無料オンラインツール",
+  keywords: "画像変換,JPG,PNG,WebP,HEIC,AVIF,GIF,フォーマット変換,無料ツール"
+}
 ---
 
-<Layout title="QuickToolify">
+<Layout title={toolInfo.title} description={toolInfo.description} keywords={toolInfo.keywords}>
+  <!-- サーバーサイドレンダリングされた説明部分 -->
+  <div class="max-w-3xl mx-auto mb-8">
+    <h1 class="text-3xl font-bold mb-4">画像フォーマット変換ツール</h1>
+    <p class="text-lg mb-4">
+      さまざまな画像フォーマット間で簡単に変換できるオンラインツールです。
+      JPG、PNG、WebP、HEIC、AVIF、GIF形式に対応しています。
+    </p>
+
+    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-semibold mb-2">主な特徴</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>複数ファイルのバッチ変換</li>
+        <li>高品質な変換結果</li>
+        <li>プライバシー保護 - ファイルはサーバーに保存されません</li>
+        <li>完全無料で制限なし</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- クライアントサイドのインタラクティブ部分 -->
   <ImageConverter client:only />
+
+  <!-- 追加のSEO向けコンテンツ -->
+  <div class="max-w-3xl mx-auto mt-12 prose">
+    <h2>画像フォーマットについて</h2>
+    <p>
+      画像フォーマットの選択は、ウェブサイトのパフォーマンスや画質に大きく影響します。
+      最近のフォーマットであるWebPやAVIFは、従来のJPGやPNGよりも優れた圧縮率を提供します。
+    </p>
+  </div>
 </Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "画像フォーマット変換",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    }
+  }
+</script>
