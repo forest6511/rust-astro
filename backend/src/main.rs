@@ -1,4 +1,5 @@
 use std::net::SocketAddr;
+use std::env;
 
 use axum::{
     routing::{get, post},
@@ -7,7 +8,6 @@ use axum::{
 use tower_http::cors::{Any, CorsLayer};
 use tracing::{Level, info};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, filter::EnvFilter};
-use magick_rust::MagickWand;  // 追加
 
 mod handlers;
 mod services;
@@ -32,8 +32,21 @@ async fn main() {
     info!("QuickToolify バックエンドサーバー起動中...");
 
     // CORSの設定
+    let origins_str = env::var("ALLOWED_ORIGINS")
+        .unwrap_or_else(|_| "http://localhost:4321".to_string());
+
+    let allowed_origins: Vec<String> = origins_str
+        .split(',')
+        .map(|s| s.to_string())
+        .collect();
+
     let cors = CorsLayer::new()
-        .allow_origin(Any)
+        .allow_origin(
+            allowed_origins
+                .iter()
+                .map(|origin| origin.parse().unwrap())
+                .collect::<Vec<_>>()
+        )
         .allow_methods(Any)
         .allow_headers(Any);
 

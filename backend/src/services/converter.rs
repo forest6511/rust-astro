@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use std::path::Path;
 use image::{self, ImageFormat};
-use magick_rust::{MagickWand, MagickError};
+use magick_rust::{MagickWand};
 
 pub fn convert_image(input: &str, output: &str, format: &str) -> Result<()> {
     tracing::debug!("変換開始: {} → {} ({}形式)", input, output, format);
