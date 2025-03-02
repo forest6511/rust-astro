@@ -27,6 +27,7 @@ jobs:
             ${{ runner.os }}-cargo-
 
       # https://fly.io/docs/launch/continuous-deployment-with-github-actions/
+      - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
         name: Setup Flyctl
 
