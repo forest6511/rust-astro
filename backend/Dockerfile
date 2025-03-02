@@ -3,8 +3,16 @@ FROM rust:latest AS builder
 
 # 必要なツールをインストール
 RUN apt-get update && apt-get install -y \
-    curl build-essential clang pkg-config libjpeg-turbo-progs libpng-dev \
-    libmagickwand-dev libclang-dev && \
+    curl \
+    build-essential \
+    clang \
+    pkg-config \
+    libjpeg-turbo-progs \
+    libpng-dev \
+    libmagickwand-dev \
+    libclang-dev \
+    libheif-dev \
+    libavif-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # ImageMagickのインストール
@@ -34,6 +42,7 @@ RUN cargo build --release
 # 実行用のユーザーを作成
 RUN adduser --disabled-password --gecos '' rust-user
 RUN chown -R rust-user /app
+RUN ldconfig
 
 # 実行ユーザーを変更
 USER rust-user
