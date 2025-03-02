@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policymap [
+        <!ELEMENT policymap (policy)+>
+        <!ELEMENT policy (#PCDATA)>
+        <!ATTLIST policy domain (delegate|coder|filter|path|resource) #REQUIRED>
+        <!ATTLIST policy rights (none|read|write|execute) #REQUIRED>
+        <!ATTLIST policy pattern CDATA #REQUIRED>
+        <!ATTLIST policy value CDATA #IMPLIED>
+        ]>
+<policymap>
+    <!-- 画像形式の変換許可 -->
+    <policy domain="coder" rights="read|write" pattern="JPEG" />
+    <policy domain="coder" rights="read|write" pattern="JPG" />
+    <policy domain="coder" rights="read|write" pattern="PNG" />
+    <policy domain="coder" rights="read|write" pattern="WEBP" />
+    <policy domain="coder" rights="read|write" pattern="HEIC" />
+    <policy domain="coder" rights="read|write" pattern="AVIF" />
+    <policy domain="coder" rights="read|write" pattern="GIF" />
+
+    <!-- リソース制限の設定 -->
+    <policy domain="resource" name="memory" value="256MiB"/>
+    <policy domain="resource" name="map" value="512MiB"/>
+    <policy domain="resource" name="width" value="16KP"/>
+    <policy domain="resource" name="height" value="16KP"/>
+    <policy domain="resource" name="disk" value="1GiB"/>
+</policymap>

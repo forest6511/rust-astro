@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Progress } from '@/components/ui/progress'
-import { Loader2, Upload, FileType, X, AlertCircle } from 'lucide-react'
+import { Loader2, Upload, FileType, X, AlertCircle, Check } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
@@ -122,8 +122,10 @@ export default function ImageConverter() {
 
   const convertFile = async (file: File) => {
     try {
+      console.log(`変換開始: ${file.name} -> ${format}形式`);
       // 1ファイルずつ変換
       const result = await convertImages([file], format);
+      console.log(`変換完了: ${file.name}`);
       return result.files[0];
     } catch (error) {
       console.error('Conversion error:', error);
@@ -140,12 +142,16 @@ export default function ImageConverter() {
       setError(null);
       setProgress(0);
 
+      console.log(`${files.length}個のファイルを処理開始`);
+
       const convertedFilesArray: ConvertedFile[] = [];
 
       try {
         for (let i = 0; i < files.length; i++) {
           // 1ファイルずつ処理
           const file = files[i];
+          console.log(`ファイル ${i+1}/${files.length} 処理中: ${file.name}`);
+
           const convertedFile = await convertFile(file);
           convertedFilesArray.push(convertedFile);
 
@@ -153,7 +159,11 @@ export default function ImageConverter() {
           const newProgress = Math.round(((i + 1) / files.length) * 100);
           setProgress(newProgress);
           setConvertedFiles([...convertedFilesArray]);
+
+          console.log(`進捗: ${newProgress}%`);
         }
+
+        console.log('全ファイル処理完了');
       } catch (error) {
         console.error('Conversion process error:', error);
         setError('変換中にエラーが発生しました。もう一度お試しください。');
@@ -240,72 +250,20 @@ export default function ImageConverter() {
               <Loader2 className="h-4 w-4 animate-spin" />
               <p className="font-medium">変換中...</p>
             </div>
-            <Progress value={progress} />
+            <Progress value={progress} className="h-2" />
             <p className="text-xs text-center text-gray-500">
               {progress}% 完了
             </p>
           </div>
         )}
 
-        {/* 選択したファイル表示 */}
-        {files.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
+        {/* 変換結果表示 */}
+        {convertedFiles.length > 0 && (
+          <div className="mt-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Check className="h-5 w-5 text-green-500" />
               <h3 className="font-medium">
-                アップロードしたファイル ({files.length})
-              </h3>
-              <Button variant="outline" size="sm" onClick={clearFiles} disabled={loading}>
-                すべて削除
-              </Button>
-            </div>
-            <div className="max-h-60 overflow-y-auto border rounded-lg divide-y">
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  className="p-3 flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-3">
-                    <FileType className="h-8 w-8 text-gray-400" />
-                    <div>
-                      <p className="text-sm font-medium truncate max-w-[200px]">
-                        {file.name}
-                      </p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge
-                          variant="outline"
-                          className={getFileTypeColor(file.type)}
-                        >
-                          {file.type.split('/')[1].toUpperCase()}
-                        </Badge>
-                        <span className="text-xs text-gray-500">
-                          {formatFileSize(file.size)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeFile(index)}
-                    disabled={loading}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </CardContent>
-
-      {/* 変換結果表示 */}
-      {convertedFiles.length > 0 && (
-        <CardFooter className="flex flex-col">
-          <Separator className="my-4" />
-          <div className="w-full space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium">
-                変換されたファイル ({convertedFiles.length})
+                変換完了
               </h3>
             </div>
             <div className="max-h-60 overflow-y-auto border rounded-lg divide-y">
@@ -318,7 +276,7 @@ export default function ImageConverter() {
                     <FileType className="h-8 w-8 text-gray-400" />
                     <div>
                       <p className="text-sm font-medium truncate max-w-[200px]">
-                        {file.name}
+                        {file.originalName} → {file.name}
                       </p>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge
@@ -341,9 +299,19 @@ export default function ImageConverter() {
                 </div>
               ))}
             </div>
+
+            <div className="flex justify-center mt-4">
+              <Button
+                variant="outline"
+                onClick={clearFiles}
+                className="w-full max-w-xs"
+              >
+                クリア
+              </Button>
+            </div>
           </div>
-        </CardFooter>
-      )}
+        )}
+      </CardContent>
     </Card>
   )
 }
