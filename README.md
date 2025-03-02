@@ -13,3 +13,22 @@
     ├── Cargo.toml    # 依存関係
     └── Dockerfile    # デプロイ用
 ```
+
+
+バックエンドのビルドと実行  
+```
+cd backend
+cargo build --release
+cargo run
+```
+
+バックエンド確認とデプロイ  
+```
+docker build -t quicktoolify-backend .
+flyctl deploy
+```
+
+ログの確認  
+```
+flyctl logs
+```
