@@ -267,37 +267,60 @@ export default function ImageConverter() {
               </h3>
             </div>
             <div className="max-h-60 overflow-y-auto border rounded-lg divide-y">
-              {convertedFiles.map((file, index) => (
-                <div
-                  key={index}
-                  className="p-3 flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-3">
-                    <FileType className="h-8 w-8 text-gray-400" />
-                    <div>
-                      <p className="text-sm font-medium truncate max-w-[200px]">
-                        {file.originalName} → {file.name}
-                      </p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge
-                          variant="outline"
-                          className="bg-green-100 text-green-800"
-                        >
-                          {format.toUpperCase()}
-                        </Badge>
-                        <span className="text-xs text-gray-500">
-                          {formatFileSize(file.size)}
-                        </span>
+              {convertedFiles.map((file, index) => {
+                const isError = file.url.startsWith('error:');
+
+                return (
+                  <div
+                    key={index}
+                    className={`p-3 flex items-center justify-between ${isError ? 'bg-red-50' : ''}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* サムネイル表示部分 */}
+                      {isError ? (
+                        <AlertCircle className="h-12 w-12 text-red-500" />
+                      ) : (
+                        <div className="h-12 w-12 border rounded overflow-hidden flex-shrink-0">
+                          <img
+                            src={file.url}
+                            alt={file.name}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      )}
+
+                      <div>
+                        <p className="text-sm font-medium truncate max-w-[200px]">
+                          {file.originalName}
+                        </p>
+                        {isError ? (
+                          <p className="text-xs text-red-600 mt-1">{file.url.substring(6)}</p>
+                        ) : (
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge
+                              variant="outline"
+                              className="bg-green-100 text-green-800"
+                            >
+                              {format.toUpperCase()}
+                            </Badge>
+                            <span className="text-xs text-gray-500">
+                              {formatFileSize(file.size)}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
+
+                    {!isError && (
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={file.url} download={file.name}>
+                          ダウンロード
+                        </a>
+                      </Button>
+                    )}
                   </div>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={file.url} download={file.name}>
-                      ダウンロード
-                    </a>
-                  </Button>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="flex justify-center mt-4">
