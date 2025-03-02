@@ -117,6 +117,7 @@ pub async fn convert_image(mut multipart: Multipart) -> impl IntoResponse {
                     "jpeg" => "image/jpeg",
                     "png" => "image/png",
                     "webp" => "image/webp",
+                    "avif" => "image/avif",
                     _ => "application/octet-stream",
                 };
                 let url = format!("data:{};base64,{}", mime_type, data_base64);
