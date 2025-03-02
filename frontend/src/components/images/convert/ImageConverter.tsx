@@ -14,13 +14,7 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
-
-export type ConvertedFile = {
-  originalName: string
-  name: string
-  url: string
-  size: number
-}
+import type { ConvertedFile } from '@/types/convert.ts'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
@@ -96,7 +90,10 @@ export default function ImageConverter() {
       console.log(`変換開始: ${file.name} -> ${format}形式`)
       const result = await convertImages([file], format)
       console.log(`変換完了: ${file.name}`)
-      return result.files[0]
+      return {
+        ...result.files[0],
+        convertedFormat: format,
+      }
     } catch (error) {
       console.error('Conversion error:', error)
       throw error

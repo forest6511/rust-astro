@@ -37,7 +37,7 @@ export default function ConvertedFileList({
           const isError = file.url.startsWith('error:')
           const downloadFileName = getDownloadFileName(
             file.originalName,
-            format
+            file.convertedFormat
           )
 
           return (
@@ -72,7 +72,7 @@ export default function ConvertedFileList({
                         variant="outline"
                         className="bg-green-100 text-green-800"
                       >
-                        {format.toUpperCase()}
+                        {file.convertedFormat.toUpperCase()}
                       </Badge>
                       <span className="text-xs text-gray-500">
                         {formatFileSize(file.size)}

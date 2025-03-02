@@ -4,6 +4,7 @@ export interface ConvertedFile {
   name: string
   url: string
   size: number
+  convertedFormat: string
 }
 
 export interface ConvertedFileListProps {
