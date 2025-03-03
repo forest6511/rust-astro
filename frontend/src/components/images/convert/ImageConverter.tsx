@@ -116,25 +116,38 @@ export default function ImageConverter() {
       const convertedFilesArray: ConvertedFile[] = []
 
       try {
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i]
+        // 新しいファイルのみを処理するように修正
+        const newFiles = files.filter(file =>
+          !convertedFiles.some(cf =>
+            cf.originalName === file.name && cf.url.indexOf(file.name) !== -1
+          )
+        )
+
+        for (let i = 0; i < newFiles.length; i++) {
+          const file = newFiles[i]
           const convertedFile = await convertFile(file)
           convertedFilesArray.push(convertedFile)
 
-          const newProgress = Math.round(((i + 1) / files.length) * 100)
+          const newProgress = Math.round(((i + 1) / newFiles.length) * 100)
           setProgress(newProgress)
-          setConvertedFiles([...convertedFilesArray])
+        }
+
+        // 既存のファイルに新しいファイルを追加
+        if (convertedFilesArray.length > 0) {
+          setConvertedFiles(prev => [...prev, ...convertedFilesArray])
         }
       } catch (error) {
         console.error('Conversion process error:', error)
         setError('変換中にエラーが発生しました。もう一度お試しください。')
       } finally {
         setLoading(false)
+        // 変換が完了したファイルをfilesから削除
+        setFiles([])
       }
     }
 
     processFiles()
-  }, [files])
+  }, [files, loading, convertedFiles])
 
   useEffect(() => {
     setError(null)
