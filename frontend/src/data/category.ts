@@ -20,11 +20,11 @@ export const categories: Category[] = [
   },
   {
     id: 2,
-    name: 'JSON整形',
+    name: 'データ整形',
     bg: '#E3F2FD',
     text: '#1976D2',
     slug: 'json-formatter',
-    description: 'JSONデータを整形、検証、変換するツール',
+    description: 'テキスト・JSONデータを整形、検証、変換するツール',
     keywords: ['JSON', 'データ整形', 'フォーマッター', '構造化データ'],
   },
   {
