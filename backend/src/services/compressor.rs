@@ -42,13 +42,25 @@ pub fn compress_image(input: &str, output: &str, quality: i32) -> Result<()> {
     // 画像タイプに応じた最適化設定
     match input_ext.as_str() {
         "jpg" | "jpeg" => {
-            tracing::debug!("JPEG最適化設定適用");
-            // JPEGの場合、インターレース解除と進行式表示を無効化
+            tracing::debug!("JPEG圧縮最適化適用");
+
             let _ = wand.set_interlace_scheme(InterlaceType::No);
 
-            // JPEGに適した品質設定
-            let _ = wand.set_image_property("jpeg:optimize", "true");
-            let _ = wand.set_image_property("jpeg:fancy-upsampling", "true");
+            // 変更点: `jpeg:quality` を明示的に適用
+            let _ = wand.set_image_property("jpeg:quality", &format!("{}", quality));
+
+            let _ = wand.set_compression_quality(quality as usize);
+
+            // 変更点: Sampling Factor を 4:1:1 に変更（さらに圧縮）
+            let _ = wand.set_image_property("jpeg:sampling-factor", "4:1:1");
+
+            // 変更点: Progressive を無効化（サイズ増加を防ぐ）
+            let _ = wand.set_image_property("jpeg:progressive", "false");
+
+            // 変更点: Optimize を一旦削除（影響をチェック）
+            // let _ = wand.set_image_property("jpeg:optimize", "true");
+
+            let _ = wand.set_image_property("jpeg:fancy-upsampling", "false");
         },
         "png" => {
             tracing::debug!("PNG最適化設定適用");
