@@ -27,7 +27,7 @@ pub struct ConversionResponse {
     files: Vec<ConvertedFile>,
 }
 
-pub async fn convert_image(mut multipart: Multipart) -> impl IntoResponse {
+pub async fn convert_image(mut multipart: Multipart) -> Result<impl IntoResponse, StatusCode> {
     tracing::info!("開始: 画像変換リクエスト受信");
     let mut result = Vec::<ConvertedFile>::new();
     let mut target_format = String::new();
@@ -53,9 +53,22 @@ pub async fn convert_image(mut multipart: Multipart) -> impl IntoResponse {
             let content_type = field.content_type().unwrap_or("application/octet-stream").to_string();
             tracing::info!("ファイル検出: '{}', タイプ: {}", file_name, content_type);
 
-            // ファイルデータの取得
-            let data = field.bytes().await.unwrap();
-            tracing::debug!("ファイルサイズ: {} バイト", data.len());
+            // 詳細なログを追加
+            tracing::debug!("ファイルデータの読み込み開始");
+
+            // データを取得（シンプルに）
+            let data = match field.bytes().await {
+                Ok(bytes) => {
+                    tracing::debug!("ファイルデータ読み込み成功: {} バイト", bytes.len());
+                    bytes
+                },
+                Err(err) => {
+                    tracing::error!("ファイルデータ読み込みエラー: {}", err);
+                    return Err(StatusCode::BAD_REQUEST);
+                }
+            };
+
+            tracing::debug!("ファイルデータの読み込み完了: {} バイト", data.len());
 
             // 後で処理するためにファイルを保存
             files_to_process.push((file_name, data.to_vec()));
@@ -151,7 +164,7 @@ pub async fn convert_image(mut multipart: Multipart) -> impl IntoResponse {
     let _ = fs::remove_dir_all(temp_dir);
 
     tracing::info!("完了: {}ファイルを処理", result.len());
-    (StatusCode::OK, Json(ConversionResponse { files: result }))
+    Ok((StatusCode::OK, Json(ConversionResponse { files: result })))
 }
 
 // 画像圧縮用の新しい構造体
@@ -172,7 +185,7 @@ pub struct CompressionResponse {
 }
 
 // 画像圧縮のエンドポイント関数
-pub async fn compress_image(mut multipart: Multipart) -> impl IntoResponse {
+pub async fn compress_image(mut multipart: Multipart) -> Result<impl IntoResponse, StatusCode> {
     tracing::info!("開始: 画像圧縮リクエスト受信");
     let mut result = Vec::<CompressedFile>::new();
     let mut quality = 60; // デフォルト圧縮品質
@@ -204,7 +217,13 @@ pub async fn compress_image(mut multipart: Multipart) -> impl IntoResponse {
             tracing::info!("ファイル検出: '{}', タイプ: {}", file_name, content_type);
 
             // ファイルデータの取得
-            let data = field.bytes().await.unwrap();
+            let data = match field.bytes().await {
+                Ok(bytes) => bytes,
+                Err(err) => {
+                    tracing::error!("ファイルの読み込みに失敗: {}", err);
+                    return Err(StatusCode::BAD_REQUEST);
+                }
+            };
             tracing::debug!("ファイルサイズ: {} バイト", data.len());
 
             // 後で処理するためにファイルを保存
@@ -305,5 +324,5 @@ pub async fn compress_image(mut multipart: Multipart) -> impl IntoResponse {
     let _ = fs::remove_dir_all(temp_dir);
 
     tracing::info!("完了: {}ファイルを処理", result.len());
-    (StatusCode::OK, Json(CompressionResponse { files: result }))
+    Ok((StatusCode::OK, Json(CompressionResponse { files: result })))
 }

@@ -3,12 +3,7 @@ use anyhow::{Result, anyhow};
 use std::path::Path;
 use magick_rust::{
     MagickWand,
-    PixelWand,
     InterlaceType,
-    CompressionType,
-    ColorspaceType,
-    ImageType,
-    DitherMethod
 };
 
 pub fn compress_image(input: &str, output: &str, quality: i32) -> Result<()> {

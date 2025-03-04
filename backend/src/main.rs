@@ -5,6 +5,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use axum::extract::DefaultBodyLimit;
 use tower_http::cors::{Any, CorsLayer};
 use tracing::{Level, info};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, filter::EnvFilter};
@@ -56,7 +57,8 @@ async fn main() {
     let app = Router::new()
         .route("/", get(handlers::health_check))
         .route("/convert/images", post(handlers::images::convert_image))
-        .route("/compress/images", post(handlers::images::compress_image)) // 新しいエンドポイント追加
+        .route("/compress/images", post(handlers::images::compress_image))
+        .layer(DefaultBodyLimit::max(20 * 1024 * 1024))
         .layer(cors);
 
     info!("ルーティング設定完了");
