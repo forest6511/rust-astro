@@ -1,5 +1,6 @@
 use std::net::SocketAddr;
 use std::env;
+use dotenv::dotenv;
 
 use axum::{
     routing::{get, post},
@@ -18,7 +19,8 @@ async fn main() {
     // ImageMagickの初期化
     magick_rust::magick_wand_genesis();
     info!("ImageMagick初期化完了");
-
+    // .envファイルを読み込む
+    dotenv().ok();
     // ロギングの初期化 - より詳細に設定
     let filter = EnvFilter::from_default_env()
         .add_directive(Level::DEBUG.into())
@@ -34,7 +36,10 @@ async fn main() {
 
     // CORSの設定
     let origins_str = env::var("ALLOWED_ORIGINS")
-        .unwrap_or_else(|_| "https://quickify.tools".to_string());
+        .unwrap_or_else(|e| {
+            info!("ALLOWED_ORIGINS環境変数の取得に失敗しました: {}", e);
+            "https://quickify.tools".to_string()
+        });
 
 
     let allowed_origins: Vec<String> = origins_str
