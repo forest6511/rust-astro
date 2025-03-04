@@ -89,7 +89,7 @@ const ogImage = `${siteUrl}/og-image.png` // デフォルトのOGイメージ
   />
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
-<Header client:load title="ツール一覧" />
+<Header client:load title={title} />
 
 <!-- モバイル表示時にもコンテンツエリアが適切に表示されるように -->
 <div class="flex flex-1 overflow-hidden">
