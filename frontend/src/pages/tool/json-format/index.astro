@@ -1,0 +1,79 @@
+---
+// src/pages/tool/json-format/index.astro
+import Layout from '@/layouts/Layout.astro'
+import JsonFormatter from '@/components/json/JsonFormatter'
+
+const toolInfo = {
+  title: "JSONフォーマット - Quickify",
+  description: "JSONデータを読みやすく整形できる無料オンラインツール。構文ハイライト付きで見やすく表示します。",
+  keywords: "JSON,JSONフォーマット,JSON整形,JSONバリデーション,JSONパーサー,無料ツール"
+}
+
+// OGイメージなどの追加情報
+const ogInfo = {
+  basic: {
+    title: "JSONフォーマット・整形ツール | Quickify",
+    type: "website",
+    image: "https://quickify.tools/images/og/json-format.png",
+  },
+  optional: {
+    description: toolInfo.description,
+  }
+}
+---
+
+<Layout
+  title={toolInfo.title}
+  description={toolInfo.description}
+  keywords={toolInfo.keywords}
+  openGraph={ogInfo}
+>
+  <!-- サーバーサイドレンダリングされた説明部分 -->
+  <div class="max-w-3xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
+    <h1 class="text-3xl font-bold mb-4">JSONフォーマットツール</h1>
+    <p class="text-lg mb-4">
+      JSONデータを読みやすく整形できるオンラインツールです。
+      構文の検証も同時に行います。
+    </p>
+
+    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-semibold mb-2">主な特徴</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>JSONデータの整形（Pretty Print）</li>
+        <li>構文エラーのチェック</li>
+        <li>コピー＆ペーストで簡単に利用可能</li>
+        <li>シンタックスハイライト付き</li>
+        <li>完全無料で制限なし</li>
+      </ul>
+    </div>
+
+    <!-- クライアントサイドのインタラクティブ部分 -->
+    <JsonFormatter client:only />
+
+    <h2 class="text-xl font-semibold mt-6 mb-3">JSONについて</h2>
+    <p class="mb-3">
+      JSON（JavaScript Object Notation）は、軽量なデータ交換フォーマットです。
+      人間にとって読み書きしやすく、機械にとっても解析や生成が容易です。
+    </p>
+    <p>
+      APIのデータ形式やアプリケーションの設定ファイルなど、様々な場面で使用されています。
+      このツールを使えば、整形されていない長いJSONデータも簡単に読みやすい形に変換できます。
+    </p>
+  </div>
+</Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "JSONフォーマット",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "description": "JSONデータを読みやすく整形できる無料オンラインツール。構文ハイライト付きで見やすく表示します。"
+  }
+</script>
