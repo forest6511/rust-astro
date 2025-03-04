@@ -34,7 +34,8 @@ async fn main() {
 
     // CORSの設定
     let origins_str = env::var("ALLOWED_ORIGINS")
-        .unwrap_or_else(|_| "http://localhost:4321".to_string());
+        .unwrap_or_else(|_| "https://quickify.tools".to_string());
+
 
     let allowed_origins: Vec<String> = origins_str
         .split(',')
@@ -51,7 +52,7 @@ async fn main() {
         .allow_methods(Any)
         .allow_headers(Any);
 
-    info!("CORS設定完了");
+    info!("CORS設定完了 {}", origins_str);
 
     // ルーティングの設定
     let app = Router::new()
