@@ -8,9 +8,39 @@ import { getToolsByCategory } from '@/lib/data-utils'
 // サーバーサイドでの事前処理
 const tools = getToolsByCategory(null)
 const categoryName = 'すべて'
+
+// SEO設定
+const pageTitle = "Quickify - 便利なツールコレクション"
+const pageDescription = "Quickify、画像変換、JSON整形、PDF変換など様々な無料ウェブツールを提供するサイトです。"
+const pageKeywords = "無料ツール,オンラインツール,画像変換,JSONフォーマット,PDF変換,無料WEBツール"
+
+// OGとTwitter設定
+const ogInfo = {
+  basic: {
+    title: pageTitle,
+    type: "website",
+    image: "https://quickify.tools/og-image.png",
+  },
+  optional: {
+    description: pageDescription,
+    siteName: "Quickify",
+  }
+}
+
+const twitterInfo = {
+  card: "summary_large_image",
+  site: "@quicktoolify",
+  creator: "@quicktoolify"
+}
 ---
 
-<Layout title="QuickToolify - 便利なツールコレクション">
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  openGraph={ogInfo}
+  twitter={twitterInfo}
+>
   <!-- 共通コンポーネントを使用 -->
   <ToolList tools={tools} categoryName={categoryName} />
 

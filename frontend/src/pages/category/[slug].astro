@@ -31,13 +31,38 @@ const pageKeywords = getPageKeywords(categoryId);
 const filteredTools = getToolsByCategory(categoryId);
 const currentCategory = category?.name || 'すべて';
 
+// カテゴリー固有のSEO設定
+const ogInfo = {
+  basic: {
+    title: pageTitle,
+    type: "website",
+    image: `https://quickify.tools/category-images/${slug || 'all'}.png`,
+  },
+  optional: {
+    description: pageDescription,
+    siteName: "Quickify",
+  }
+}
+
+const twitterInfo = {
+  card: "summary_large_image",
+  site: "@quickify",
+  creator: "@quickify"
+}
+
 // 無効なスラッグの場合はリダイレクト
 if (!category) {
   return Astro.redirect('/category/all');
 }
 ---
 
-<Layout title={pageTitle} description={pageDescription} keywords={pageKeywords}>
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  openGraph={ogInfo}
+  twitter={twitterInfo}
+>
   <!-- 共通コンポーネントを使用 -->
   <ToolList tools={filteredTools} categoryName={currentCategory} />
 

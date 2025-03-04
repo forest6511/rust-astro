@@ -117,10 +117,13 @@ export default function ImageConverter() {
 
       try {
         // 新しいファイルのみを処理するように修正
-        const newFiles = files.filter(file =>
-          !convertedFiles.some(cf =>
-            cf.originalName === file.name && cf.url.indexOf(file.name) !== -1
-          )
+        const newFiles = files.filter(
+          (file) =>
+            !convertedFiles.some(
+              (cf) =>
+                cf.originalName === file.name &&
+                cf.url.indexOf(file.name) !== -1
+            )
         )
 
         for (let i = 0; i < newFiles.length; i++) {
@@ -134,7 +137,7 @@ export default function ImageConverter() {
 
         // 既存のファイルに新しいファイルを追加
         if (convertedFilesArray.length > 0) {
-          setConvertedFiles(prev => [...prev, ...convertedFilesArray])
+          setConvertedFiles((prev) => [...prev, ...convertedFilesArray])
         }
       } catch (error) {
         console.error('Conversion process error:', error)

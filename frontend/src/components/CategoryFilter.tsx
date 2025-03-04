@@ -1,5 +1,5 @@
 // src/components/CategoryFilter.tsx
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useStore } from '@nanostores/react'
 import { Button } from './ui/button'
 import type { Category } from '@/data/category'
@@ -19,25 +19,33 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   initialCategoryId = null,
 }) => {
   const selectedCategory = useStore(selectedCategoryStore)
+  const [isClient, setIsClient] = useState(false)
 
-  // 初期カテゴリをセットアップ
+  // クライアントサイドであることを確認
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // 初期カテゴリをセットアップ - クライアントサイドでのみ実行
+  useEffect(() => {
+    if (!isClient) return
+
     if (initialCategoryId !== undefined) {
       selectedCategoryStore.set(initialCategoryId)
-    } else if (typeof window !== 'undefined') {
+    } else {
       // URLからカテゴリIDを取得して設定
       const categoryId = getCategoryIdFromPath(window.location.pathname)
       if (categoryId !== null) {
         selectedCategoryStore.set(categoryId)
       }
     }
-  }, [initialCategoryId])
+  }, [initialCategoryId, isClient])
 
   const handleCategorySelect = (categoryId: number | null) => {
     selectedCategoryStore.set(categoryId)
 
-    // URLを更新（スラッグベース）
-    if (typeof window !== 'undefined') {
+    // URLを更新（スラッグベース）- クライアントサイドでのみ実行
+    if (isClient) {
       const path = getCategoryPathById(categoryId)
 
       // 現在と同じカテゴリの場合はナビゲーションしない
@@ -49,6 +57,11 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
     // モバイルメニューを閉じる
     mobileMenuStore.set(false)
   }
+
+  // クライアントサイドでのみ適用される初期選択状態
+  const effectiveSelectedCategory = isClient
+    ? selectedCategory
+    : initialCategoryId
 
   return (
     <aside className={`${className}`} aria-label="カテゴリフィルター">
@@ -64,19 +77,25 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
           {categories.map((category) => (
             <Button
               key={category.id}
-              variant={selectedCategory === category.id ? 'default' : 'ghost'}
+              variant={
+                effectiveSelectedCategory === category.id ? 'default' : 'ghost'
+              }
               className="w-full justify-start text-sm py-2 px-3 h-auto"
               onClick={() =>
                 handleCategorySelect(category.id === 0 ? null : category.id)
               }
               style={{
                 backgroundColor:
-                  selectedCategory === category.id ? category.bg : undefined,
+                  effectiveSelectedCategory === category.id
+                    ? category.bg
+                    : undefined,
                 color:
-                  selectedCategory === category.id ? category.text : undefined,
+                  effectiveSelectedCategory === category.id
+                    ? category.text
+                    : undefined,
               }}
               data-category-id={category.id}
-              aria-pressed={selectedCategory === category.id}
+              aria-pressed={effectiveSelectedCategory === category.id}
               aria-label={`カテゴリ: ${category.name}`}
             >
               {category.name}

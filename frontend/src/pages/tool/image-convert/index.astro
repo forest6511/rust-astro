@@ -4,13 +4,30 @@ import Layout from '@/layouts/Layout.astro'
 import ImageConverter from '@/components/images/convert/ImageConverter'
 
 const toolInfo = {
-  title: "画像フォーマット変換 - QuickToolify",
+  title: "画像フォーマット変換 - Quickify",
   description: "JPG、PNG、WebP、HEIC、AVIF、GIF形式の画像を別のフォーマットに簡単に変換できる無料オンラインツール",
   keywords: "画像変換,JPG,PNG,WebP,HEIC,AVIF,GIF,フォーマット変換,無料ツール"
 }
+
+// OGイメージなどの追加情報
+const ogInfo = {
+  basic: {
+    title: "画像フォーマット変換ツール | Quickify",
+    type: "website",
+    image: "https://quickify.tools/images/og/image-convert.png", // ツール専用のOG画像があれば
+  },
+  optional: {
+    description: toolInfo.description,
+  }
+}
 ---
 
-<Layout title={toolInfo.title} description={toolInfo.description} keywords={toolInfo.keywords}>
+<Layout
+  title={toolInfo.title}
+  description={toolInfo.description}
+  keywords={toolInfo.keywords}
+  openGraph={ogInfo}
+>
   <!-- サーバーサイドレンダリングされた説明部分 -->
   <div  class="max-w-3xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
     <h1 class="text-3xl font-bold mb-4">画像フォーマット変換ツール</h1>

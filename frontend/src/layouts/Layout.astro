@@ -1,4 +1,8 @@
 ---
+// layouts/Layouts.astro
+import { SEO } from "astro-seo";
+import type { TwitterCardType } from '@/types/seo';
+
 import Header from '@/components/Header'
 import CategoryFilter from '@/components/CategoryFilter'
 import MobileMenu from '@/components/MobileMenu'
@@ -9,16 +13,37 @@ interface Props {
   title?: string;
   keywords?: string;
   description?: string;
+  openGraph?: {
+    basic?: {
+      title?: string;
+      type?: string;
+      image?: string;
+    },
+    optional?: {
+      description?: string;
+      siteName?: string;
+      locale?: string;
+    }
+  };
+  twitter?: {
+    card?: string;
+    site?: string;
+    creator?: string;
+  };
 }
 
 const {
-  title = 'QuickToolify - 便利なツールコレクション',
-  description = 'QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。',
+  title = 'Quickify - 便利なツールコレクション',
+  description = 'Quickify、様々なカテゴリの便利なツールを簡単に見つけることができます。',
+  keywords = "ツール, オンラインツール, Quickify, ユーティリティ",
+  openGraph,
+  twitter
 } = Astro.props
 
 // 現在のURL情報の安全な取得
 const pathname = Astro.url.pathname
-const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com'
+const siteUrl = import.meta.env.SITE || 'https://quickify.tools'
+const ogImage = `${siteUrl}/og-image.png` // デフォルトのOGイメージ
 ---
 
 <!doctype html>
@@ -26,15 +51,42 @@ const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com'
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>{title}</title>
-  <meta name="description" content={description}>
-  <meta name="keywords" content="ツール, オンラインツール, QuickToolify, ユーティリティ">
-  <meta property="og:title" content={title}>
-  <meta property="og:description" content={description}>
-  <meta property="og:type" content="website">
-  <meta property="og:url" content={`${siteUrl}${pathname}`}>
-  <link rel="canonical" href={`${siteUrl}${pathname}`}>
+  <SEO
+    title={title}
+    description={description}
+    canonical={`${siteUrl}${pathname}`}
+    openGraph={{
+      basic: {
+        title: openGraph?.basic?.title || title,
+        type: openGraph?.basic?.type || "website",
+        image: openGraph?.basic?.image || ogImage,
+        url: `${siteUrl}${pathname}`,
+      },
+      optional: {
+        description: openGraph?.optional?.description || description,
+        siteName: openGraph?.optional?.siteName || "Quickify",
+        locale: openGraph?.optional?.locale || "ja_JP",
+      }
+    }}
+    twitter={{
+      card: (twitter?.card as "summary" | "summary_large_image" | "app" | "player") || "summary_large_image",
+      site: twitter?.site || "@quicktoolify",
+      creator: twitter?.creator || "@quicktoolify",
+    }}
+    extend={{
+      // 追加のmetaタグ
+      meta: [
+        { name: "keywords", content: keywords },
+        { name: "theme-color", content: "#ffffff" },
+      ],
+      // 追加のlinkタグ
+      link: [
+        { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+        { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+        { rel: "manifest", href: "/manifest.json" },
+      ],
+    }}
+  />
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
 <Header client:load title="ツール一覧" />
@@ -44,7 +96,7 @@ const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com'
   <!-- デスクトップ用サイドバー -->
   <nav aria-label="カテゴリナビゲーション" class="hidden sm:block sm:w-56 h-full">
     <CategoryFilter
-      client:load
+      client:only="react"
       categories={[{
         id: 0,
         name: 'すべて',
@@ -61,7 +113,7 @@ const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com'
   <!-- モバイルメニュー -->
   <MobileMenu client:load>
     <CategoryFilter
-      client:load
+      client:only="react"
       categories={[{
         id: 0,
         name: 'すべて',
@@ -84,7 +136,7 @@ const siteUrl = import.meta.env.SITE || 'https://quicktoolify.example.com'
 
 <footer class="bg-white py-4 border-t">
   <div class="container mx-auto px-4 text-center text-sm text-gray-600">
-    <p>&copy; 2025 QuickToolify - すべての便利なツールを一箇所に</p>
+    <p>&copy; 2025 Quickify - すべての便利なツールを一箇所に</p>
   </div>
 </footer>
 </body>

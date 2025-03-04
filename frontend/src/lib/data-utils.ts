@@ -69,19 +69,19 @@ export function getToolsByCategory(categoryId: number | null): Tool[] {
 export function getPageTitle(categoryId: number | null): string {
   const category = getCategoryById(categoryId)
   return category
-    ? `${category.name} - QuickToolify`
-    : 'QuickToolify - 便利なツールコレクション'
+    ? `${category.name} - Quickify`
+    : 'Quickify - 便利なツールコレクション'
 }
 
 // ページ説明の生成
 export function getPageDescription(categoryId: number | null): string {
   const category = getCategoryById(categoryId)
   if (!category) {
-    return 'QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。'
+    return 'Quickifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。'
   }
 
   return category.id === 0
-    ? 'QuickToolifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。'
+    ? 'Quickifyでは、様々なカテゴリの便利なツールを簡単に見つけることができます。'
     : category.description
 }
 
@@ -89,7 +89,7 @@ export function getPageDescription(categoryId: number | null): string {
 export function getPageKeywords(categoryId: number | null): string {
   const category = getCategoryById(categoryId)
   if (!category || category.id === 0) {
-    return 'ツール, オンラインツール, QuickToolify, ユーティリティ'
+    return 'ツール, オンラインツール, Quickify, ユーティリティ'
   }
 
   return category.keywords.join(', ')
