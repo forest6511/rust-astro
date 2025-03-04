@@ -1,0 +1,79 @@
+---
+// src/pages/tool/generate-password/index.astro
+import Layout from '@/layouts/Layout.astro'
+import PasswordGenerator from '@/components/password/PasswordGenerator'
+
+const toolInfo = {
+  title: "パスワード生成ツール - Quickify",
+  description: "安全で強力なパスワードを自動生成できる無料オンラインツール。文字数や文字種を選択できます。",
+  keywords: "パスワード,パスワード生成,強力なパスワード,ランダムパスワード,パスワード作成,パスワードジェネレーター"
+}
+
+// OGイメージなどの追加情報
+const ogInfo = {
+  basic: {
+    title: "パスワード生成ツール | Quickify",
+    type: "website",
+    image: "https://quickify.tools/images/og/generate-password.png",
+  },
+  optional: {
+    description: toolInfo.description,
+  }
+}
+---
+
+<Layout
+  title={toolInfo.title}
+  description={toolInfo.description}
+  keywords={toolInfo.keywords}
+  openGraph={ogInfo}
+>
+  <!-- サーバーサイドレンダリングされた説明部分 -->
+  <div class="max-w-3xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
+    <h1 class="text-3xl font-bold mb-4">パスワード生成ツール</h1>
+    <p class="text-lg mb-4">
+      安全で強力なパスワードを簡単に自動生成できるオンラインツールです。
+      文字数や使用する文字の種類を選べます。
+    </p>
+
+    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-semibold mb-2">主な特徴</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>カスタマイズ可能なパスワード生成</li>
+        <li>小文字・大文字・数字・記号を選択可能</li>
+        <li>4〜32文字までの長さ設定</li>
+        <li>複数のパスワードを一度に生成</li>
+        <li>ワンクリックでコピー可能</li>
+      </ul>
+    </div>
+
+    <!-- クライアントサイドのインタラクティブ部分 -->
+    <PasswordGenerator client:only />
+
+    <h2 class="text-xl font-semibold mt-6 mb-3">安全なパスワードとは</h2>
+    <p class="mb-3">
+      安全なパスワードは、推測や自動攻撃ツールによる解読が困難なものです。
+      一般的に、長さ（8文字以上）、複雑さ（異なる種類の文字を使用）、そして予測不可能性（個人情報を含まない）が重要な要素です。
+    </p>
+    <p>
+      このツールを使用することで、これらの要素を満たす強力なパスワードを簡単に生成することができます。
+      重要なアカウントには異なるパスワードを使用し、パスワード管理ツールを利用することも推奨されます。
+    </p>
+  </div>
+</Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "パスワード生成ツール",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "description": "安全で強力なパスワードを自動生成できる無料オンラインツール。文字数や文字種を選択できます。"
+  }
+</script>
