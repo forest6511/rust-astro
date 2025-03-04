@@ -71,7 +71,8 @@ export default function ImageCompressor() {
       try {
         // すべてのファイルを一度に送信
         const result = await compressImages(files, quality)
-        setCompressedFiles(result.files)
+        // 既存のリストに新しい結果を追加
+        setCompressedFiles(prevFiles => [...prevFiles, ...result.files])
         setProgress(100)
       } catch (error) {
         console.error('Compression process error:', error)
