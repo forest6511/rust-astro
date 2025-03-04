@@ -55,7 +55,7 @@ export default function JsonFormatter() {
       const parsed = JSON.parse(input)
       let formatted: string
 
-      const selectedIndent = indentOptions.find(opt => opt.id === indentType)
+      const selectedIndent = indentOptions.find((opt) => opt.id === indentType)
 
       if (selectedIndent?.id === 'compact') {
         // 改行・インデント・空白なし
@@ -179,10 +179,7 @@ export default function JsonFormatter() {
         <Button onClick={formatJson} className="bg-blue-600 hover:bg-blue-700">
           整形する
         </Button>
-        <Button
-          onClick={handleMinify}
-          variant="outline"
-        >
+        <Button onClick={handleMinify} variant="outline">
           圧縮する
         </Button>
         {input && (
@@ -205,9 +202,7 @@ export default function JsonFormatter() {
       {output && (
         <div className="mt-6">
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium">
-              整形結果:
-            </label>
+            <label className="block text-sm font-medium">整形結果:</label>
             <Button
               variant="ghost"
               size="sm"
@@ -215,9 +210,13 @@ export default function JsonFormatter() {
               className="text-gray-500 hover:text-gray-700"
             >
               {copied ? (
-                <><CheckIcon className="h-4 w-4 mr-1" /> コピーしました</>
+                <>
+                  <CheckIcon className="h-4 w-4 mr-1" /> コピーしました
+                </>
               ) : (
-                <><CopyIcon className="h-4 w-4 mr-1" /> コピー</>
+                <>
+                  <CopyIcon className="h-4 w-4 mr-1" /> コピー
+                </>
               )}
             </Button>
           </div>
@@ -226,7 +225,9 @@ export default function JsonFormatter() {
               ref={outputRef}
               className="text-sm font-mono whitespace-pre"
               style={{ tabSize: tabSize }}
-            >{output}</pre>
+            >
+              {output}
+            </pre>
           </div>
         </div>
       )}
