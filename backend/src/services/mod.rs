@@ -1,4 +1,5 @@
 pub mod converter;
+pub mod compressor;
 
 #[cfg(test)]
 mod tests {

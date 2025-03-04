@@ -56,6 +56,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(handlers::health_check))
         .route("/convert/images", post(handlers::images::convert_image))
+        .route("/compress/images", post(handlers::images::compress_image)) // 新しいエンドポイント追加
         .layer(cors);
 
     info!("ルーティング設定完了");

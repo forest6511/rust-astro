@@ -1,0 +1,80 @@
+---
+// src/pages/tool/image-compress/index.astro
+import Layout from '@/layouts/Layout.astro'
+import ImageCompressor from '@/components/images/compress/ImageCompressor'
+
+const toolInfo = {
+  title: "画像圧縮 - Quickify",
+  description: "JPG、PNG、WebP形式の画像を最適化して容量を削減できる無料オンラインツール",
+  keywords: "画像圧縮,画像最適化,JPG圧縮,PNG圧縮,WebP圧縮,ファイルサイズ削減,無料ツール"
+}
+
+// OGイメージなどの追加情報
+const ogInfo = {
+  basic: {
+    title: "画像圧縮ツール | Quickify",
+    type: "website",
+    image: "https://quickify.tools/images/og/image-compress.png",
+  },
+  optional: {
+    description: toolInfo.description,
+  }
+}
+---
+
+<Layout
+  title={toolInfo.title}
+  description={toolInfo.description}
+  keywords={toolInfo.keywords}
+  openGraph={ogInfo}
+>
+  <!-- サーバーサイドレンダリングされた説明部分 -->
+  <div class="max-w-3xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
+    <h1 class="text-3xl font-bold mb-4">画像圧縮ツール</h1>
+    <p class="text-lg mb-4">
+      画像ファイルを効率的に圧縮し、容量を削減できるオンラインツールです。
+      JPG、PNG、WebP形式に対応しています。
+    </p>
+
+    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-semibold mb-2">主な特徴</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>複数ファイルのバッチ圧縮</li>
+        <li>画質と圧縮率の調整可能</li>
+        <li>オリジナル形式を維持したまま最適化</li>
+        <li>圧縮前後のサイズ比較</li>
+        <li>最大20MBまでのファイルに対応</li>
+        <li>完全無料で制限なし</li>
+      </ul>
+    </div>
+
+    <!-- クライアントサイドのインタラクティブ部分 -->
+    <ImageCompressor client:only />
+
+    <h2 class="text-xl font-semibold mt-6 mb-3">画像圧縮について</h2>
+    <p class="mb-3">
+      画像圧縮は、画質をできるだけ維持しながらファイルサイズを小さくするプロセスです。
+      ウェブサイトの表示速度向上や帯域幅の節約に非常に効果的です。
+    </p>
+    <p>
+      このツールでは画質レベルを調整でき、用途に応じて最適な圧縮率を選択できます。
+      高い圧縮率はファイルサイズをより小さくしますが、画質が低下する場合があります。
+    </p>
+  </div>
+</Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "画像圧縮",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "description": "JPG、PNG、WebP形式の画像を最適化して容量を削減できる無料オンラインツール"
+  }
+</script>
