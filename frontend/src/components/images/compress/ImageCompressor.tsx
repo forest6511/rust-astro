@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import type { CompressedFile } from '@/types/compress'
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 export default function ImageCompressor() {
   const [files, setFiles] = useState<File[]>([])
@@ -26,17 +26,15 @@ export default function ImageCompressor() {
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: any[]) => {
-      // ファイルサイズとフォーマットのチェックロジック
-      const oversizedFiles = acceptedFiles.filter(
-        (file) => file.size > MAX_FILE_SIZE
-      )
-      if (oversizedFiles.length > 0) {
-        setError(
-          `ファイルサイズが20MBを超えています: ${oversizedFiles.map((f) => f.name).join(', ')}`
-        )
-        acceptedFiles = acceptedFiles.filter(
-          (file) => file.size <= MAX_FILE_SIZE
-        )
+      // 1ファイルのみ処理
+      if (acceptedFiles.length > 1) {
+        acceptedFiles = [acceptedFiles[0]]
+      }
+
+      // ファイルサイズのチェック
+      if (acceptedFiles.length > 0 && acceptedFiles[0].size > MAX_FILE_SIZE) {
+        setError(`ファイルサイズが10MBを超えています: ${acceptedFiles[0].name}`)
+        return
       }
 
       if (rejectedFiles.length > 0) {
@@ -49,7 +47,7 @@ export default function ImageCompressor() {
       }
 
       if (acceptedFiles.length > 0) {
-        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles])
+        setFiles([acceptedFiles[0]]) // 常に1ファイルのみセット
       }
     },
     [loading]
@@ -69,7 +67,7 @@ export default function ImageCompressor() {
       setProgress(0)
 
       try {
-        // すべてのファイルを一度に送信
+        // ファイルを送信
         const result = await compressImages(files, quality)
         // 既存のリストに新しい結果を追加
         setCompressedFiles(prevFiles => [...prevFiles, ...result.files])

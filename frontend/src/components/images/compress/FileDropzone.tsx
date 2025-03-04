@@ -16,7 +16,8 @@ export default function FileDropzone({ onDrop, loading }: FileDropzoneProps) {
       'image/webp': [],
     },
     disabled: loading,
-    maxSize: 10 * 1024 * 1024, // 20MB
+    maxSize: 10 * 1024 * 1024, // 10MB
+    multiple: false, // 1ファイルのみに制限
   })
 
   return (
