@@ -1,5 +1,4 @@
 // src/components/images/compress/FileDropzone.tsx
-import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Upload } from 'lucide-react'
 
@@ -17,7 +16,7 @@ export default function FileDropzone({ onDrop, loading }: FileDropzoneProps) {
       'image/webp': [],
     },
     disabled: loading,
-    maxSize: 20 * 1024 * 1024, // 20MB
+    maxSize: 10 * 1024 * 1024, // 20MB
   })
 
   return (
@@ -36,7 +35,7 @@ export default function FileDropzone({ onDrop, loading }: FileDropzoneProps) {
         または クリックしてファイルを選択
       </p>
       <p className="text-xs text-gray-500 mt-3">
-        対応フォーマット: JPG, PNG, WebP (20MB以下)
+        対応フォーマット: JPG, PNG, WebP (10MB以下)
       </p>
     </div>
   )
