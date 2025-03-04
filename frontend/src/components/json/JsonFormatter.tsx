@@ -26,14 +26,7 @@ const indentOptions: IndentOption[] = [
   { id: 'space4', label: '半角空白 4個', value: '    ', spaces: 4 },
   { id: 'space6', label: '半角空白 6個', value: '      ', spaces: 6 },
   { id: 'space8', label: '半角空白 8個', value: '        ', spaces: 8 },
-  { id: 'fullspace2', label: '全角空白 2個', value: '　　', spaces: null },
-  { id: 'underscore4', label: 'アンダーバー 4個', value: '____', spaces: null },
-  { id: 'noindent', label: '改行・ｲﾝﾃﾞﾝﾄなし', value: '', spaces: 0 },
-  { id: 'compact', label: '改行・ｲﾝﾃﾞﾝﾄ・空白なし', value: null, spaces: null },
 ]
-
-// タブサイズオプションの定義
-const tabSizeOptions = [2, 4, 6, 8]
 
 export default function JsonFormatter() {
   const [input, setInput] = useState('')
@@ -147,27 +140,6 @@ export default function JsonFormatter() {
               {indentOptions.map((option) => (
                 <SelectItem key={option.id} value={option.id}>
                   {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            タブ文字の表示サイズ:
-          </label>
-          <Select
-            value={tabSize.toString()}
-            onValueChange={(value) => setTabSize(Number(value))}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="タブサイズを選択" />
-            </SelectTrigger>
-            <SelectContent>
-              {tabSizeOptions.map((size) => (
-                <SelectItem key={size} value={size.toString()}>
-                  {size}文字
                 </SelectItem>
               ))}
             </SelectContent>
