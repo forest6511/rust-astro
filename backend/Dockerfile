@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     libmagickwand-dev \
     libclang-dev \
     libheif-dev \
-    libavif-dev && \
+    libavif-dev \
+    nasm && \
     rm -rf /var/lib/apt/lists/*
 
 # ImageMagickのインストール
