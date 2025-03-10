@@ -10,6 +10,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.2.1",
     "@astrojs/sitemap": "^3.2.1",
     "@nanostores/react": "^0.8.4",
