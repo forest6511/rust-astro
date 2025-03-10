@@ -54,4 +54,13 @@ export const categories: Category[] = [
     description: 'PDF、Word、Excel間のドキュメント形式変換ツール',
     keywords: ['ドキュメント変換', 'PDF', 'Word', 'Excel', '変換'],
   },
+  {
+    id: 6,
+    name: '生産性ツール',
+    bg: '#E0F7FA',
+    text: '#00838F',
+    slug: 'productivity-tools',
+    description: 'タスク管理やメモ作成など、日常の生産性向上に役立つツール',
+    keywords: ['生産性', 'タスク管理', 'TODOリスト', 'メモ', '時間管理'],
+  },
 ]

@@ -1,6 +1,6 @@
 ---
 // src/components/ToolList.astro
-import { Image, FileArchive, RefreshCw, Key } from 'lucide-react';
+import { Image, FileArchive, RefreshCw, Key, CheckSquare } from 'lucide-react'
 
 export interface Props {
   tools: Array<{
@@ -18,22 +18,6 @@ export interface Props {
 }
 
 const { tools, categoryName } = Astro.props
-
-// アイコンのマッピング関数
-function getIconComponent(iconName: string) {
-  switch (iconName) {
-    case 'Image':
-      return Image;
-    case 'FileArchive':
-      return FileArchive;
-    case 'RefreshCw':
-      return RefreshCw;
-    case 'Key':
-      return Key;
-    default:
-      return null;
-  }
-}
 ---
 
 <h1 id="category-title" class="text-xl font-semibold mb-4">
@@ -65,10 +49,16 @@ function getIconComponent(iconName: string) {
             style={`background-color: ${tool.bg}; color: ${tool.text};`}
             aria-hidden="true"
           >
-            {tool.iconName === 'Image' && <Image size={24} client:load />}
-            {tool.iconName === 'FileArchive' && <FileArchive size={24} client:load />}
-            {tool.iconName === 'RefreshCw' && <RefreshCw size={24} client:load />}
-            {tool.iconName === 'Key' && <Key size={24} client:load />}
+            {tool.iconName === 'Image' &&
+              <Image size={24} client:load />}
+            {tool.iconName === 'FileArchive' &&
+              <FileArchive size={24} client:load />}
+            {tool.iconName === 'RefreshCw' &&
+              <RefreshCw size={24} client:load />}
+            {tool.iconName === 'Key' &&
+              <Key size={24} client:load />}
+            {tool.iconName === 'CheckSquare' &&
+              <CheckSquare size={24} client:load />}
             {!tool.iconName && <span>{tool.name.charAt(0)}</span>}
           </div>
           <h3 class="text-lg font-semibold mb-1 text-center">

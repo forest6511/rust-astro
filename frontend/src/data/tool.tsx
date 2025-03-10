@@ -59,7 +59,7 @@ export const tools: Tool[] = [
   },
   {
     id: 5,
-    categoryId: 2,
+    categoryId: 6,
     name: 'パスワード生成',
     description: 'パスワードを自動生成',
     iconName: 'Key',
@@ -89,5 +89,16 @@ export const tools: Tool[] = [
     url: '/tool/pdf-convert',
     bg: '#F3E5F5',
     text: '#6A1B9A',
+  },
+  {
+    id: 8,
+    categoryId: 6,
+    name: 'TODOリスト',
+    description: 'シンプルなタスク管理ツール',
+    iconName: 'CheckSquare',
+    slug: 'todo-list',
+    url: '/tool/todo-list',
+    bg: '#E0F7FA',
+    text: '#00838F',
   },
 ]

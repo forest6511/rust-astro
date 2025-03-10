@@ -1,0 +1,73 @@
+---
+// src/pages/tool/todo-list/index.astro
+import Layout from '../../../layouts/Layout.astro'
+import TodoList from '../../../components/todo/TodoList'
+
+const toolInfo = {
+  title: "TODOリスト - Quickify",
+  description: "シンプルで使いやすい無料のオンラインTODOリスト。タスクをブラウザに保存できます。",
+  keywords: "TODOリスト,タスク管理,オンラインTODO,無料ツール"
+}
+
+const ogInfo = {
+  basic: {
+    title: "TODOリスト | Quickify",
+    type: "website",
+    image: "https://quickify.tools/images/og/todo-list.png",
+  },
+  optional: {
+    description: toolInfo.description,
+  }
+}
+---
+
+<Layout
+  title={toolInfo.title}
+  description={toolInfo.description}
+  keywords={toolInfo.keywords}
+  openGraph={ogInfo}
+>
+  <div class="max-w-3xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
+    <h1 class="text-3xl font-bold mb-4">TODOリスト</h1>
+    <p class="text-lg mb-4">
+      シンプルで使いやすいTODOリストツールです。
+    </p>
+
+    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-semibold mb-2">主な特徴</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>簡単なタスク追加・完了・削除</li>
+        <li>シンプルで使いやすいインターフェース</li>
+        <li>完全無料で制限なし</li>
+      </ul>
+    </div>
+
+    <TodoList client:load />
+
+    <h2 class="text-xl font-semibold mt-6 mb-3">使い方</h2>
+    <p class="mb-3">
+      入力欄にタスクを入力して「追加」ボタンをクリックするか、Enterキーを押すだけでタスクを追加できます。
+      タスクを完了したらチェックボックスをクリックしてください。不要なタスクは削除ボタンで消去できます。
+    </p>
+    <p>
+      タスクはブラウザのローカルストレージに保存されるため、ブラウザを閉じて再度開いても内容は保持されます。
+      ただし、ブラウザの履歴やキャッシュをクリアすると消去されるのでご注意ください。
+    </p>
+  </div>
+</Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TODOリスト",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "description": "シンプルで使いやすい無料のオンラインTODOリスト。タスクをブラウザに保存できます。"
+  }
+</script>
