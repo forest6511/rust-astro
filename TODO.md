@@ -106,13 +106,6 @@
 📌 **Step 2**: **Rust API の実装（画像変換 & JSON 整形）**
 📌 **Step 3**: **Cloudflare Pages & Fly.io でデプロイ & 公開**
 
----
-
-## 🔥 次のタスク
 ✅ **画像アップロード UI を作成**（Astro + React）
 ✅ **JSON 整形 UI を作成**（シンプルなエディタ導入）
 ✅ **Rust API のエンドポイント設計 & 実装開始**
-
----
-
-💡 **この流れで進めれば、QuickToolify を最短でローンチできます！** 🚀
