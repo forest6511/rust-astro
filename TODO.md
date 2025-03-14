@@ -3,9 +3,9 @@
 ---
 
 ## ✅ 開発の流れ
-1️⃣ **フロントエンドの開発（画像アップロード UI）**
-2️⃣ **バックエンドの開発（Rust API: 画像リサイズ & JSON整形）**
-3️⃣ **Cloudflare Pages & Fly.io へのデプロイ**
+1️⃣ **フロントエンドの開発（画像アップロード UI）**  
+2️⃣ **バックエンドの開発（Rust API: 画像リサイズ & JSON整形）**  
+3️⃣ **Cloudflare Pages & Fly.io へのデプロイ**  
 
 ---
 
@@ -102,10 +102,10 @@
 ---
 
 ## 🎯 最短で QuickToolify を動かすためのアクションプラン
-📌 **Step 1**: **フロントエンド UI 開発（Astro + React）**
-📌 **Step 2**: **Rust API の実装（画像変換 & JSON 整形）**
-📌 **Step 3**: **Cloudflare Pages & Fly.io でデプロイ & 公開**
+📌 **Step 1**: **フロントエンド UI 開発（Astro + React）**  
+📌 **Step 2**: **Rust API の実装（画像変換 & JSON 整形）**  
+📌 **Step 3**: **Cloudflare Pages & Fly.io でデプロイ & 公開**  
 
-✅ **画像アップロード UI を作成**（Astro + React）
-✅ **JSON 整形 UI を作成**（シンプルなエディタ導入）
-✅ **Rust API のエンドポイント設計 & 実装開始**
+✅ **画像アップロード UI を作成**（Astro + React）  
+✅ **JSON 整形 UI を作成**（シンプルなエディタ導入）  
+✅ **Rust API のエンドポイント設計 & 実装開始**  
