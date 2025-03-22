@@ -101,4 +101,15 @@ export const tools: Tool[] = [
     bg: '#E0F7FA',
     text: '#00838F',
   },
+  {
+    id: 9,
+    categoryId: 6,
+    name: 'ブラインドタッチ練習',
+    description: 'キーボードタイピング練習ツール',
+    iconName: 'Keyboard',
+    slug: 'typing-practice',
+    url: '/tool/typing-practice',
+    bg: '#E3F2FD',
+    text: '#1565C0',
+  },
 ]

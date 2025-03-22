@@ -1,0 +1,73 @@
+---
+// src/pages/tool/typing-practice/index.astro
+import Layout from '../../../layouts/Layout.astro'
+import TypingPractice from '../../../components/typing/TypingPractice'
+
+const toolInfo = {
+  title: "ブラインドタッチ練習 - Quickify",
+  description: "Windows・MacでUS配列・日本語配列のブラインドタッチを練習できる無料ツール。初心者から上級者まで対応。",
+  keywords: "ブラインドタッチ,タイピング練習,US配列,日本語配列,キーボード練習,タッチタイピング"
+  }
+
+const ogInfo = {
+  basic: {
+  title: "ブラインドタッチ練習 | Quickify",
+  type: "website",
+  image: "https://quickify.tools/images/og/typing-practice.png",
+  },
+  optional: {
+  description: toolInfo.description,
+  }
+  }
+---
+
+<Layout
+  title={toolInfo.title}
+  description={toolInfo.description}
+  keywords={toolInfo.keywords}
+  openGraph={ogInfo}
+>
+  <div class="max-w-4xl mx-auto mb-8 bg-white rounded-lg border shadow-sm p-6">
+    <h1 class="text-3xl font-bold mb-4">ブラインドタッチ練習</h1>
+    <p class="text-lg mb-4">
+      OSとキーボード配列を選んで、ブラインドタッチを練習できるツールです。
+    </p>
+
+    <div class="bg-blue-50 p-4 rounded-lg mb-6">
+      <h2 class="text-xl font-semibold mb-2">主な特徴</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>Windows/Mac向けのUS配列・日本語配列に対応</li>
+        <li>初心者向けのホームポジションから上級者向けの総合練習まで対応</li>
+        <li>タイピング速度（WPM）と正確性をリアルタイム表示</li>
+        <li>視覚的なキーボードガイドでキー位置を把握しやすい</li>
+      </ul>
+    </div>
+
+    <TypingPractice client:load />
+
+    <h2 class="text-xl font-semibold mt-8 mb-3">ブラインドタッチのコツ</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>正しいホームポジションから始めましょう（左手：ASDF、右手：JKL;）</li>
+      <li>画面を見て、指を動かす前にキーの位置を確認してください</li>
+      <li>最初は遅くても正確に打つことを心がけましょう</li>
+      <li>徐々に速度を上げていきましょう</li>
+      <li>定期的に練習することが上達の秘訣です</li>
+    </ul>
+  </div>
+</Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ブラインドタッチ練習",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "description": "Windows・MacでUS配列・日本語配列のブラインドタッチを練習できる無料ツール。初心者から上級者まで対応。"
+  }
+</script>
