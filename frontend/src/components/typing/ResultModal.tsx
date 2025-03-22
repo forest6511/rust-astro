@@ -1,5 +1,5 @@
 // src/components/typing/ResultModal.tsx
-import React from 'react';
+import React from 'react'
 import {
   Dialog,
   DialogContent,
@@ -7,33 +7,33 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import type { TypingResult } from '@/types/typing.ts'
 
 interface ResultModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  result: TypingResult;
-  onRetry: () => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  result: TypingResult
+  onRetry: () => void
 }
 
 export const ResultModal: React.FC<ResultModalProps> = ({
-                                                          open,
-                                                          onOpenChange,
-                                                          result,
-                                                          onRetry
-                                                        }) => {
+  open,
+  onOpenChange,
+  result,
+  onRetry,
+}) => {
   // 「もう一度練習する」ボタンのクリックハンドラ
   const handleRetryClick = () => {
     // まずモーダルを閉じる
-    onOpenChange(false);
+    onOpenChange(false)
 
     // 少し遅延させてから練習を再開する（状態更新の順序を保証）
     setTimeout(() => {
-      onRetry();
-    }, 100);
-  };
+      onRetry()
+    }, 100)
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -59,11 +59,9 @@ export const ResultModal: React.FC<ResultModalProps> = ({
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleRetryClick}>
-            もう一度練習する
-          </Button>
+          <Button onClick={handleRetryClick}>もう一度練習する</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}

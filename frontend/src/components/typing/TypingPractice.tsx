@@ -1,159 +1,168 @@
 // src/components/typing/TypingPractice.tsx
-import { useState, useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect, useRef } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
+} from '@/components/ui/select'
+import { Badge } from '@/components/ui/badge'
 
-import { KEYBOARD_LAYOUTS } from './data/keyboard-layouts';
-import { PRACTICE_TEXTS } from './data/practice-texts';
-import { KeyboardDisplay } from './KeyboardDisplay';
-import { ResultModal } from './ResultModal';
-import { TextDisplay } from './TextDisplay';
-import type { KeyboardType, OSType, PracticeType, TypingResult } from '@/types/typing.ts'
+import { KEYBOARD_LAYOUTS } from './data/keyboard-layouts'
+import { PRACTICE_TEXTS } from './data/practice-texts'
+import { KeyboardDisplay } from './KeyboardDisplay'
+import { ResultModal } from './ResultModal'
+import { TextDisplay } from './TextDisplay'
+import type {
+  KeyboardType,
+  OSType,
+  PracticeType,
+  TypingResult,
+} from '@/types/typing.ts'
 
 export default function TypingPractice() {
   // 状態管理
-  const [os, setOs] = useState<OSType>('WINDOWS');
-  const [keyboardType, setKeyboardType] = useState<KeyboardType>('US');
-  const [practiceType, setPracticeType] = useState<PracticeType>('HOME_ROW');
-  const [currentText, setCurrentText] = useState('');
-  const [typedText, setTypedText] = useState('');
-  const [isStarted, setIsStarted] = useState(false);
-  const [mistakes, setMistakes] = useState(0);
-  const [time, setTime] = useState(0);
-  const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
-  const [keyHighlight, setKeyHighlight] = useState('');
-  const [showResultModal, setShowResultModal] = useState(false);
-  const [result, setResult] = useState<TypingResult>({ wpm: 0, accuracy: 0, time: 0 });
+  const [os, setOs] = useState<OSType>('WINDOWS')
+  const [keyboardType, setKeyboardType] = useState<KeyboardType>('US')
+  const [practiceType, setPracticeType] = useState<PracticeType>('HOME_ROW')
+  const [currentText, setCurrentText] = useState('')
+  const [typedText, setTypedText] = useState('')
+  const [isStarted, setIsStarted] = useState(false)
+  const [mistakes, setMistakes] = useState(0)
+  const [time, setTime] = useState(0)
+  const [wpm, setWpm] = useState(0)
+  const [accuracy, setAccuracy] = useState(100)
+  const [keyHighlight, setKeyHighlight] = useState('')
+  const [showResultModal, setShowResultModal] = useState(false)
+  const [result, setResult] = useState<TypingResult>({
+    wpm: 0,
+    accuracy: 0,
+    time: 0,
+  })
 
   // refs
-  const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<number | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null)
+  const timerRef = useRef<number | null>(null)
 
   // キーボードレイアウトの取得
-  const getCurrentKeyboard = () => KEYBOARD_LAYOUTS[keyboardType][os];
+  const getCurrentKeyboard = () => KEYBOARD_LAYOUTS[keyboardType][os]
 
   // 練習タイプに基づいてランダムなテキストを取得
   const getRandomPracticeText = () => {
-    const texts = PRACTICE_TEXTS[practiceType];
-    return texts[Math.floor(Math.random() * texts.length)];
-  };
+    const texts = PRACTICE_TEXTS[practiceType]
+    return texts[Math.floor(Math.random() * texts.length)]
+  }
 
   // 練習の開始
   const startPractice = () => {
     // 既に開始していた場合は一度リセット
     if (isStarted) {
       if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
+        clearInterval(timerRef.current)
+        timerRef.current = null
       }
     }
 
-    setCurrentText(getRandomPracticeText());
-    setTypedText('');
-    setMistakes(0);
-    setTime(0);
-    setWpm(0);
-    setAccuracy(100);
-    setIsStarted(true);
-    setShowResultModal(false);
+    setCurrentText(getRandomPracticeText())
+    setTypedText('')
+    setMistakes(0)
+    setTime(0)
+    setWpm(0)
+    setAccuracy(100)
+    setIsStarted(true)
+    setShowResultModal(false)
 
     timerRef.current = window.setInterval(() => {
-      setTime(prevTime => prevTime + 1);
-    }, 1000);
+      setTime((prevTime) => prevTime + 1)
+    }, 1000)
 
     if (inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.focus()
     }
-  };
+  }
 
   // 練習の終了
   const endPractice = () => {
-    setIsStarted(false);
+    setIsStarted(false)
     if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+      clearInterval(timerRef.current)
+      timerRef.current = null
     }
 
     // 結果をセットしてモーダルを表示
     setResult({
       wpm,
       accuracy,
-      time
-    });
-    setShowResultModal(true);
-  };
+      time,
+    })
+    setShowResultModal(true)
+  }
 
   // WPMと精度の計算
   useEffect(() => {
     if (isStarted && typedText.length > 0) {
       // WPM計算 (1分あたりの単語数、1単語=5文字として計算)
-      const minutes = time / 60;
+      const minutes = time / 60
       if (minutes > 0) {
-        const words = typedText.length / 5;
-        setWpm(Math.round(words / minutes));
+        const words = typedText.length / 5
+        setWpm(Math.round(words / minutes))
       }
 
       // 精度計算
-      const totalChars = typedText.length;
-      const errorRate = mistakes / totalChars;
-      setAccuracy(Math.round((1 - errorRate) * 100));
+      const totalChars = typedText.length
+      const errorRate = mistakes / totalChars
+      setAccuracy(Math.round((1 - errorRate) * 100))
     }
-  }, [time, typedText, mistakes, isStarted]);
+  }, [time, typedText, mistakes, isStarted])
 
   // 入力処理
   const handleTyping = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isStarted) return;
+    if (!isStarted) return
 
-    const key = e.key;
+    const key = e.key
 
     // 次に打つべき文字
-    const nextChar = currentText[typedText.length];
+    const nextChar = currentText[typedText.length]
 
     // バックスペースの処理
     if (key === 'Backspace') {
       if (typedText.length > 0) {
-        setTypedText(prev => prev.slice(0, -1));
+        setTypedText((prev) => prev.slice(0, -1))
       }
-      return;
+      return
     }
 
     // 1文字だけの入力を処理
     if (key.length === 1) {
       // 文字をハイライト表示
-      setKeyHighlight(key.toLowerCase());
-      setTimeout(() => setKeyHighlight(''), 200);
+      setKeyHighlight(key.toLowerCase())
+      setTimeout(() => setKeyHighlight(''), 200)
 
       // 入力文字の処理
-      setTypedText(prev => prev + key);
+      setTypedText((prev) => prev + key)
 
       // ミスの確認
       if (key !== nextChar) {
-        setMistakes(prev => prev + 1);
+        setMistakes((prev) => prev + 1)
       }
 
       // 終了判定
       if (typedText.length + 1 >= currentText.length) {
-        endPractice();
+        endPractice()
       }
     }
-  };
+  }
 
   // useEffectでクリーンアップ
   useEffect(() => {
     return () => {
       if (timerRef.current) {
-        clearInterval(timerRef.current);
+        clearInterval(timerRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -174,8 +183,13 @@ export default function TypingPractice() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">キーボード配列:</label>
-          <Select value={keyboardType} onValueChange={(value: KeyboardType) => setKeyboardType(value)}>
+          <label className="block text-sm font-medium mb-2">
+            キーボード配列:
+          </label>
+          <Select
+            value={keyboardType}
+            onValueChange={(value: KeyboardType) => setKeyboardType(value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="配列を選択" />
             </SelectTrigger>
@@ -188,7 +202,10 @@ export default function TypingPractice() {
 
         <div>
           <label className="block text-sm font-medium mb-2">練習タイプ:</label>
-          <Select value={practiceType} onValueChange={(value: PracticeType) => setPracticeType(value)}>
+          <Select
+            value={practiceType}
+            onValueChange={(value: PracticeType) => setPracticeType(value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="練習タイプを選択" />
             </SelectTrigger>
@@ -216,8 +233,12 @@ export default function TypingPractice() {
 
       {isStarted && (
         <div className="text-right mb-2">
-          <Badge variant="outline" className="mr-2">{wpm} WPM</Badge>
-          <Badge variant="outline" className="mr-2">{accuracy}% 正確性</Badge>
+          <Badge variant="outline" className="mr-2">
+            {wpm} WPM
+          </Badge>
+          <Badge variant="outline" className="mr-2">
+            {accuracy}% 正確性
+          </Badge>
           <Badge variant="outline">{time}秒</Badge>
         </div>
       )}
@@ -243,10 +264,7 @@ export default function TypingPractice() {
         )}
       </div>
 
-      <KeyboardDisplay
-        layout={getCurrentKeyboard()}
-        highlight={keyHighlight}
-      />
+      <KeyboardDisplay layout={getCurrentKeyboard()} highlight={keyHighlight} />
 
       <div className="mt-8 bg-blue-50 p-4 rounded-lg">
         <h2 className="text-lg font-semibold mb-2">使い方</h2>
@@ -256,7 +274,9 @@ export default function TypingPractice() {
           <li>表示されたテキストを入力</li>
           <li>キーボードには次に押すべきキーがハイライト表示されます</li>
           <li>テキストをすべて入力すると練習が終了し、結果が表示されます</li>
-          <li>いつでも「問題を変更」をクリックして新しい問題に切り替えられます</li>
+          <li>
+            いつでも「問題を変更」をクリックして新しい問題に切り替えられます
+          </li>
         </ol>
       </div>
 
@@ -268,5 +288,5 @@ export default function TypingPractice() {
         onRetry={startPractice}
       />
     </div>
-  );
+  )
 }

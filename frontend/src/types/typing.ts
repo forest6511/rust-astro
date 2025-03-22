@@ -1,6 +1,6 @@
 // src/components/typing/typing.ts
-export type OSType = 'WINDOWS' | 'MAC';
-export type KeyboardType = 'US' | 'JP';
+export type OSType = 'WINDOWS' | 'MAC'
+export type KeyboardType = 'US' | 'JP'
 export type PracticeType =
   | 'HOME_ROW'
   | 'TOP_ROW'
@@ -10,10 +10,10 @@ export type PracticeType =
   | 'SYMBOLS'
   | 'JAPANESE_MIXED'
   | 'PROGRAMMING'
-  | 'PUNCTUATION';
+  | 'PUNCTUATION'
 
 export interface TypingResult {
-  wpm: number;
-  accuracy: number;
-  time: number;
+  wpm: number
+  accuracy: number
+  time: number
 }
